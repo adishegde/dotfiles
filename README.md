@@ -54,21 +54,21 @@ required configuration but it I'm not sure it will work out of the box.
 
 ## Zsh
 
-The current configuration uses [oh-my-zsh](https://ohmyz.sh/) as the plugin
-manager for zsh. It also uses [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
-as the theme.
+The current configuration uses [prezto](https://github.com/sorin-ionescu/prezto)
+as the plugin manager for zsh. It also uses [spaceship](https://github.com/denysdovhan/spaceship-prompt)
+as the prompt. It uses [snazzy](https://github.com/sindresorhus/iterm2-snazzy)
+as the terminal theme.
 
 To use the configuration:
 
 - Download and install zsh.
-- Download and install [oh-my-zsh](https://ohmyz.sh/).
-- Download and install [powerlevel9k](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions#step-1-install-powerlevel9k)
-for oh-my-zsh.
-- Download and install [powerline fonts](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions#step-2-install-a-powerline-font).
-- Download and install [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) for oh-my-zsh.
-- Download and install [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting).
-- Make sure that you're terminal uses a powerline font.
+- Download and install [prezto](https://github.com/sorin-ionescu/prezto). Don't
+forget to copy the files from prezto/runcoms as suggested in the prezto/README.
+- Download and install [spaceship](https://github.com/denysdovhan/spaceship-prompt).
+- Download and install the [snazzy](https://github.com/sindresorhus/iterm2-snazzy)
+theme. It's also available for other Terminals.
 - Copy/Symlink `zshrc` into `~/.zshrc`.
+- Copy/Symlink `zpreztorc` into `~/.zpreztorc`.
 - Source the new zshrc file.
 
 ## Ranger
