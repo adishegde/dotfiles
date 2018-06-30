@@ -7,7 +7,8 @@ This is the customary dotfile repo maintained by anyone who's wasted a
 I wasn't in the habit of mentioning the sources at the time and so I apologize
 if content has been copied without due credit.
 
-Also everything might not work out of the box.
+Also everything might not work out of the box. All the configurations are
+for MacOS with an iTerm2 but should work in most Linux OS.
 
 ## Tmux
 
@@ -69,3 +70,17 @@ for oh-my-zsh.
 - Make sure that you're terminal uses a powerline font.
 - Copy/Symlink `zshrc` into `~/.zshrc`.
 - Source the new zshrc file.
+
+## Ranger
+
+Ranger is a file manager for the console. The current neovim
+configuration uses ranger as the file manager.
+
+To use the configuration:
+
+- Download and install [ranger](https://ranger.github.io/ranger-stable.tar.gz).
+- Copy/Symlink `rc.conf` to `~/.config/ranger/rc.conf`.
+- Copy/Symlink `rifle.conf` to `~/.config/ranger/rifle.conf`.
+
+With the current configuration ranger should work properly in neovim and
+console.
