@@ -84,3 +84,11 @@ To use the configuration:
 
 With the current configuration ranger should work properly in neovim and
 console.
+
+## Git
+
+To use the configuration:
+
+- Change Name and Email in gitconfig.
+- Copy/Symlink `gitconfig` to `~/.gitconfig`.
+- Copy/Symlink `gitignore_global` to `~/.gitignore_global`.
