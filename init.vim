@@ -123,8 +123,8 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1                                               
 
 colorscheme gruvbox
 
-let g:python_host_prog  = '~/.local/share/nvim/python2/bin/python'              "Path to python interpretters
-let g:python3_host_prog = '~/.local/share/nvim/python3/bin/python3'
+let g:python_host_prog=expand("$HOME/.local/share/nvim/python2/bin/python")     "Path to python interpretters
+let g:python3_host_prog=expand("$HOME/.local/share/nvim/python3/bin/python3")
 
 let g:deoplete#enable_at_startup = 1                                            "Enable deoplete at startup
 
@@ -183,8 +183,8 @@ call deoplete#custom#source('ultisnips', 'matchers', ['matcher_fuzzy'])
 
 " Deoplete movement through Tab and selection through enter
 " Ultisnips completion through Ctrl+j
-let g:UltiSnipsSnippetsDir = "~/.local/share/nvim/UltiSnips"
-let g:UltiSnipsSnippetDirectories = ["~/.local/share/nvim/UltiSnips"]
+let g:UltiSnipsSnippetsDir = expand("$HOME/.local/share/nvim/UltiSnips")
+let g:UltiSnipsSnippetDirectories = [expand("$HOME/.local/share/nvim/UltiSnips")]
 let g:UltiSnipsExpandTrigger = "<C-j>"
 
 let g:deoplete#sources#clang#libclang_path = "/usr/local/Cellar/llvm/5.0.0/lib/libclang.dylib"

@@ -21,6 +21,7 @@ export SPACESHIP_PROMPT_ORDER=(
   host          # Hostname section
   git           # Git section (git_branch + git_status)
   docker        # Docker section
+  venv          # virtualenv section
   exec_time     # Execution time
   line_sep      # Line break
   vi_mode       # Vi-mode indicator
@@ -31,8 +32,6 @@ export SPACESHIP_PROMPT_ORDER=(
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
 ZSH_AUTOSUGGEST_USE_ASYNC="true"
-
-export LANG=en_US.UTF-8
 
 # Easy access to config
 alias zshconfig="$EDITOR ~/.zshrc"
