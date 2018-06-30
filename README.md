@@ -45,8 +45,13 @@ To use the configuration:
 
 - Download and install [neovim](https://neovim.io/).
 - Download and install [vim-plug](https://github.com/junegunn/vim-plug).
+- Create python2 virtual environments at `~/.local/share/nvim/python2` and run `pip install neovim`.
+- Create python3 virtual environments at `~/.local/share/nvim/python3` and run `pip install neovim`.
 - Copy/Symlink `init.vim` into `~/.config/nvim/init.vim` (the neovim config file).
 - Run `nvim` and then type `:PlugInstall`.
+
+The python virtual environments are required for running python based neovim
+plugins. It's better to maintain a seperate python installation for neovim.
 
 To use some of the plugins like `ranger` and `fzf` you'll need to also install
 the corresponding programs and configure it. The `zshrc` file contains the
@@ -69,6 +74,10 @@ forget to copy the files from prezto/runcoms as suggested in the prezto/README.
 theme. It's also available for other Terminals.
 - Copy/Symlink `zshrc` into `~/.zshrc`.
 - Copy/Symlink `zpreztorc` into `~/.zpreztorc`.
+- Copy/Symlink `zprofile` into `~/.zprofile`.
+- Copy/Symlink `zshenv` into `~/.zshenv`.
+- Copy/Symlink `zlogin` into `~/.zlogin`.
+- Copy/Symlink `zlogout` into `~/.zlogout`.
 - Source the new zshrc file.
 
 ## Ranger
