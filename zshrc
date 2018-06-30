@@ -44,6 +44,7 @@ alias v="nvim"
 # start virtual box VM from command line
 alias start-vm="VBoxManage startvm --type headless"
 
+alias tmux="tmux -2"
 alias tsw="tmux switchc -t"
 alias tl='tmux list-sessions'
 alias trw="tmux renamew -t"
