@@ -5,6 +5,8 @@ Plug 'pangloss/vim-javascript'                                                  
 Plug 'maxmellon/vim-jsx-pretty'
 
 Plug 'morhetz/gruvbox'                                                          "Color scheme
+Plug 'joshdick/onedark.vim'
+Plug 'iCyMind/NeoSolarized'
 
 " See mappings
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }               "Searching interface
@@ -88,6 +90,7 @@ filetype plugin indent on                                                       
 let g:mapleader =  " "                                                          "Change leader to a space
 
 let g:onedark_terminal_italics = 1                                              "Enable italic font
+let g:onedark_termcolors=16
 
 set termguicolors
 set title                                                                       "change the terminal's title
@@ -117,11 +120,14 @@ set pumheight=30                                                                
 set foldmethod=syntax                                                           "Set syntax based folding
 set nofoldenable
 set colorcolumn=80
+set t_Co=256
 
 syntax on                                                                       "turn on syntax highlighting
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1                                               "This line enables the true color support.
 
-colorscheme gruvbox
+colorscheme onedark
+
+hi ColorColumn ctermbg=237 guibg=#3c3836
 
 let g:python_host_prog=expand("$HOME/.local/share/nvim/python2/bin/python")     "Path to python interpretters
 let g:python3_host_prog=expand("$HOME/.local/share/nvim/python3/bin/python3")
@@ -136,6 +142,7 @@ let g:AutoPairsFlyMode = 0                                                      
 let g:AutoPairsShortcutBackInsert = '<M-b>'                                     "To override/remove FlyMode inserted char
 
 let g:airline#extensions#tabline#enabled = 1                                    "Show buffers if only one tab
+let g:airline_theme='onedark'
 
 call neomake#configure#automake('w')                                            "Call neomake maker on write
 "let g:neomake_open_list = 2                                                     "Open location list automatically
