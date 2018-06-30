@@ -6,7 +6,7 @@ fi
 bindkey -M viins 'jk' vi-cmd-mode
 
 # Keep your system specific configuration here
-source "$HOME/.zshrc-local"
+[ -f "$HOME/.zshrc-local" ] && source "$HOME/.zshrc-local"
 
 export TERM="xterm-256color"
 export EDITOR="nvim"
