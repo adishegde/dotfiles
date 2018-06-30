@@ -9,15 +9,10 @@ bindkey -M viins 'jk' vi-cmd-mode
 [ -f "$HOME/.zshrc-local" ] && source "$HOME/.zshrc-local"
 
 export TERM="xterm-256color"
-export EDITOR="nvim"
-export VISUAL="$EDITOR"
-export LANG="en_US.UTF-8"
 export PYTHONPATH=/usr/local/bin/python2.7/site-packages:$PYTHONPATH
 export GTAGSLABEL=pygments
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-# options to use with the "less" pager
-export LESS="-F -g -i -M -R -S -w -z-4"
 
 export SPACESHIP_PROMPT_ORDER=(
   time          # Time stamps section
