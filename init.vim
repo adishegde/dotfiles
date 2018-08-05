@@ -47,7 +47,6 @@ Plug 'wellle/targets.vim'                                                       
 Plug 'sjl/vitality.vim'                                                         "Improve vim, tmux and iTerm compatibility
 Plug 'haya14busa/is.vim'                                                        "Improves incremental search
 
-Plug 'ryanoasis/vim-devicons'                                                   "Icons for plugins
 Plug 'ludovicchabant/vim-gutentags'                                             "Tag file generation automated
 
 " post install (yarn install | npm install) then load plugin only for editing supported files
@@ -81,6 +80,12 @@ Plug 'danro/rename.vim'                                                         
 Plug 'airblade/vim-gitgutter'                                                   "Show diff in gutter
 
 Plug 'SirVer/ultisnips'                                                         "Snippet engine neovim
+
+Plug 'tpope/vim-fugitive'
+
+Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }                          " Live preview for LaTeX
+
+Plug 'ryanoasis/vim-devicons'                                                   "Icons for plugins
 
 call plug#end()
 
@@ -197,6 +202,9 @@ let g:UltiSnipsExpandTrigger = "<C-j>"
 let g:deoplete#sources#clang#libclang_path = "/usr/local/Cellar/llvm/5.0.0/lib/libclang.dylib"
 let g:deoplete#sources#clang#clang_header = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1"
 let g:deoplete#sources#clang#std = {'c': 'c11', 'cpp': 'c++14', 'objc': 'c11', 'objcpp': 'c++1z'}
+
+let g:livepreview_previewer = 'open -a Preview'
+let g:tex_flavor='latex'
 
 set updatetime=100                                                              "To make vim-gutter update faster
 
