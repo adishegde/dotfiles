@@ -14,6 +14,8 @@ export GTAGSLABEL=pygments
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
+# Git expr syntax error fix
+export SPACESHIP_DIR_TRUNC_REPO=false
 export SPACESHIP_PROMPT_ORDER=(
   time          # Time stamps section
   user          # Username section
