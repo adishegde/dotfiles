@@ -85,6 +85,8 @@ Plug 'tpope/vim-fugitive'
 
 Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }                          " Live preview for LaTeX
 
+Plug 'tomlion/vim-solidity'                                                     " Solidity syntax support
+
 Plug 'ryanoasis/vim-devicons'                                                   "Icons for plugins
 
 call plug#end()
