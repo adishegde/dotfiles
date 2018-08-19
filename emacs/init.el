@@ -9,6 +9,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+; Import use-package
 (eval-when-compile
   (require 'use-package))
 
@@ -48,6 +49,8 @@
 
 ; Easy setup for vim like leader mappings
 (use-package evil-leader
+  :init
+  (setq evil-want-integration nil) ; Required by evil-collection, assigned here since this is loaded before evil
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
@@ -55,7 +58,11 @@
     "bd" 'kill-this-buffer
     "t" 'helm-semantic-or-imenu
     "ff" 'helm-find-files
-    "rr" 'ranger)
+    "rr" 'ranger
+    "wl" 'evil-window-right
+    "wh" 'evil-window-left
+    "wk" 'evil-window-up
+    "wj" 'evil-window-down)
   (global-evil-leader-mode))
   
 ; Indent guides support
@@ -69,6 +76,7 @@
 ; Add new surround pairs to "evil-surround-pairs-alist", can be added based on hook
 ; Add new operator pairs to "evil-surround-operator-alist"
 (use-package evil-surround
+  :after evil
   :config
   (global-evil-surround-mode 1))
 
@@ -101,30 +109,29 @@
 (use-package evil
   :after evil-leader ; Ensures that evil-leader works in all buffers
   :init
-  (setq evil-search-module 'evil-search)
-  (setq evil-insert-state-cursor '('nil bar))
-  (setq evil-emacs-state-modes nil) ; Don't start in emacs state anywhere
-  (setq evil-motion-state-modes nil) ; Don't start in motion state anywhere
-
+  (setq evil-search-module 'evil-search
+        evil-insert-state-cursor '('nil bar)
+        evil-emacs-state-modes nil ; Don't start in emacs state anywhere
+        evil-motion-state-modes nil) ; Don't start in motion state anywhere
+        
   :config
   (evil-mode 1))
 
 ; Dependencies for org-evil
 (use-package evil-org
-  :after org
+  :after org evil
+
+  :init
+  (setq org-agenda-files '("~/org")) ; Use org files in ~/org for agenda creation
+
   :config
   (add-hook 'org-mode-hook 'evil-org-mode)
   (add-hook 'evil-org-mode-hook
 	    (lambda ()
 	      (evil-org-set-key-theme)))
   (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
-
-; Org mode setup
-(evil-leader/set-key-for-mode 'org-mode "tt" 'org-todo) ; Add shortcut to add new todo
-(evil-leader/set-key-for-mode 'org-mode "od" 'org-deadline) ; Add shortcut org deadline
-(evil-leader/set-key-for-mode 'org-mode "os" 'org-schedule) ; Add shortcut to org schedule
-(setq org-agenda-files '("~/org")) ; Use org files in ~/org for agenda creation
+  (evil-org-agenda-set-keys)
+  (evil-leader/set-key-for-mode 'org-mode "tt" 'org-todo)) ; Add shortcut to add new todo
 
 ; Use spaceline to beautify mode-line
 (use-package spaceline
@@ -147,9 +154,8 @@
 	company-require-match 'never)
 
   :config
-  (global-company-mode)
   (define-key company-active-map [return] 'company-complete)
-  (define-key company-active-map [tab] 'company-select-next))
+  (global-company-mode))
 
 ; Doc popup for company autocomplete
 (use-package pos-tip) ; Install latest for company-quickhelp
@@ -192,3 +198,157 @@
 (use-package ranger
   :init
   (setq ranger-cleanup-on-disable t))
+
+(use-package tablist)
+
+; Pdf-tools
+(use-package pdf-tools
+  :after tablist
+  :init
+  (setenv "PKG_CONFIG_PATH" "/usr/local/Cellar/zlib/1.2.8/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig"))
+
+; Make evil work normally in various modes
+(use-package evil-collection
+  :after evil
+
+  :init
+  (setq evil-collection-company-use-tng nil)
+
+  :config
+  (evil-collection-init))
+
+; Ligature support via Fira Code Symbol
+;; This works when using emacs --daemon + emacsclient
+(add-hook 'after-make-frame-functions (lambda (frame) (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")))
+;; This works when using emacs without server/client
+(set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")
+;; I haven't found one statement that makes both of the above situations work, so I use both for now
+
+(defconst fira-code-font-lock-keywords-alist
+  (mapcar (lambda (regex-char-pair)
+            `(,(car regex-char-pair)
+              (0 (prog1 ()
+                   (compose-region (match-beginning 1)
+                                   (match-end 1)
+                                   ;; The first argument to concat is a string containing a literal tab
+                                   ,(concat "	" (list (decode-char 'ucs (cadr regex-char-pair)))))))))
+          '(("\\(www\\)"                   #Xe100)
+            ("[^/]\\(\\*\\*\\)[^/]"        #Xe101)
+            ("\\(\\*\\*\\*\\)"             #Xe102)
+            ("\\(\\*\\*/\\)"               #Xe103)
+            ("\\(\\*>\\)"                  #Xe104)
+            ("[^*]\\(\\*/\\)"              #Xe105)
+            ("\\(\\\\\\\\\\)"              #Xe106)
+            ("\\(\\\\\\\\\\\\\\)"          #Xe107)
+            ("\\({-\\)"                    #Xe108)
+            ("\\(\\[\\]\\)"                #Xe109)
+            ("\\(::\\)"                    #Xe10a)
+            ("\\(:::\\)"                   #Xe10b)
+            ("[^=]\\(:=\\)"                #Xe10c)
+            ("\\(!!\\)"                    #Xe10d)
+            ("\\(!=\\)"                    #Xe10e)
+            ("\\(!==\\)"                   #Xe10f)
+            ("\\(-}\\)"                    #Xe110)
+            ("\\(--\\)"                    #Xe111)
+            ("\\(---\\)"                   #Xe112)
+            ("\\(-->\\)"                   #Xe113)
+            ("[^-]\\(->\\)"                #Xe114)
+            ("\\(->>\\)"                   #Xe115)
+            ("\\(-<\\)"                    #Xe116)
+            ("\\(-<<\\)"                   #Xe117)
+            ("\\(-~\\)"                    #Xe118)
+            ("\\(#{\\)"                    #Xe119)
+            ("\\(#\\[\\)"                  #Xe11a)
+            ("\\(##\\)"                    #Xe11b)
+            ("\\(###\\)"                   #Xe11c)
+            ("\\(####\\)"                  #Xe11d)
+            ("\\(#(\\)"                    #Xe11e)
+            ("\\(#\\?\\)"                  #Xe11f)
+            ("\\(#_\\)"                    #Xe120)
+            ("\\(#_(\\)"                   #Xe121)
+            ("\\(\\.-\\)"                  #Xe122)
+            ("\\(\\.=\\)"                  #Xe123)
+            ("\\(\\.\\.\\)"                #Xe124)
+            ("\\(\\.\\.<\\)"               #Xe125)
+            ("\\(\\.\\.\\.\\)"             #Xe126)
+            ("\\(\\?=\\)"                  #Xe127)
+            ("\\(\\?\\?\\)"                #Xe128)
+            ("\\(;;\\)"                    #Xe129)
+            ("\\(/\\*\\)"                  #Xe12a)
+            ("\\(/\\*\\*\\)"               #Xe12b)
+            ("\\(/=\\)"                    #Xe12c)
+            ("\\(/==\\)"                   #Xe12d)
+            ("\\(/>\\)"                    #Xe12e)
+            ("\\(//\\)"                    #Xe12f)
+            ("\\(///\\)"                   #Xe130)
+            ("\\(&&\\)"                    #Xe131)
+            ("\\(||\\)"                    #Xe132)
+            ("\\(||=\\)"                   #Xe133)
+            ("[^|]\\(|=\\)"                #Xe134)
+            ("\\(|>\\)"                    #Xe135)
+            ("\\(\\^=\\)"                  #Xe136)
+            ("\\(\\$>\\)"                  #Xe137)
+            ("\\(\\+\\+\\)"                #Xe138)
+            ("\\(\\+\\+\\+\\)"             #Xe139)
+            ("\\(\\+>\\)"                  #Xe13a)
+            ("\\(=:=\\)"                   #Xe13b)
+            ("[^!/]\\(==\\)[^>]"           #Xe13c)
+            ("\\(===\\)"                   #Xe13d)
+            ("\\(==>\\)"                   #Xe13e)
+            ("[^=]\\(=>\\)"                #Xe13f)
+            ("\\(=>>\\)"                   #Xe140)
+            ("\\(<=\\)"                    #Xe141)
+            ("\\(=<<\\)"                   #Xe142)
+            ("\\(=/=\\)"                   #Xe143)
+            ("\\(>-\\)"                    #Xe144)
+            ("\\(>=\\)"                    #Xe145)
+            ("\\(>=>\\)"                   #Xe146)
+            ("[^-=]\\(>>\\)"               #Xe147)
+            ("\\(>>-\\)"                   #Xe148)
+            ("\\(>>=\\)"                   #Xe149)
+            ("\\(>>>\\)"                   #Xe14a)
+            ("\\(<\\*\\)"                  #Xe14b)
+            ("\\(<\\*>\\)"                 #Xe14c)
+            ("\\(<|\\)"                    #Xe14d)
+            ("\\(<|>\\)"                   #Xe14e)
+            ("\\(<\\$\\)"                  #Xe14f)
+            ("\\(<\\$>\\)"                 #Xe150)
+            ("\\(<!--\\)"                  #Xe151)
+            ("\\(<-\\)"                    #Xe152)
+            ("\\(<--\\)"                   #Xe153)
+            ("\\(<->\\)"                   #Xe154)
+            ("\\(<\\+\\)"                  #Xe155)
+            ("\\(<\\+>\\)"                 #Xe156)
+            ("\\(<=\\)"                    #Xe157)
+            ("\\(<==\\)"                   #Xe158)
+            ("\\(<=>\\)"                   #Xe159)
+            ("\\(<=<\\)"                   #Xe15a)
+            ("\\(<>\\)"                    #Xe15b)
+            ("[^-=]\\(<<\\)"               #Xe15c)
+            ("\\(<<-\\)"                   #Xe15d)
+            ("\\(<<=\\)"                   #Xe15e)
+            ("\\(<<<\\)"                   #Xe15f)
+            ("\\(<~\\)"                    #Xe160)
+            ("\\(<~~\\)"                   #Xe161)
+            ("\\(</\\)"                    #Xe162)
+            ("\\(</>\\)"                   #Xe163)
+            ("\\(~@\\)"                    #Xe164)
+            ("\\(~-\\)"                    #Xe165)
+            ("\\(~=\\)"                    #Xe166)
+            ("\\(~>\\)"                    #Xe167)
+            ("[^<]\\(~~\\)"                #Xe168)
+            ("\\(~~>\\)"                   #Xe169)
+            ("\\(%%\\)"                    #Xe16a)
+           ;; ("\\(x\\)"                   #Xe16b) This ended up being hard to do properly so i'm leaving it out.
+            ("[^:=]\\(:\\)[^:=]"           #Xe16c)
+            ("[^\\+<>]\\(\\+\\)[^\\+<>]"   #Xe16d)
+            ("[^\\*/<>]\\(\\*\\)[^\\*/<>]" #Xe16f))))
+
+(defun add-fira-code-symbol-keywords ()
+  (font-lock-add-keywords nil fira-code-font-lock-keywords-alist))
+
+(add-hook 'prog-mode-hook
+          #'add-fira-code-symbol-keywords)
+
+; Set ghostscript path for doc-view
+(setq doc-view-ghostscript-program "/usr/local/bin/gs")
