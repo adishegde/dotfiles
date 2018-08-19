@@ -394,7 +394,7 @@
    Projectile and Helm integration.
    #+BEGIN_SRC emacs-lisp
    (use-package helm-projectile
-      :after projectile helm evil-leader
+      :after (projectile helm evil-leader)
       :config
       (helm-projectile-on)
       (evil-leader/set-key
@@ -405,18 +405,41 @@
    #+END_SRC
 
 ** Autocomplete and Linting
-   Company for autocomplete.
+   I've decided to use LSP for autocompletion in both emacs and neovim. LSP provides fast and (awesome) features.
    #+BEGIN_SRC emacs-lisp
-   (use-package company
-      :init
-      (setq company-idle-delay 0.2
-            company-selection-wrap-around t
-            company-require-match 'never)
+     (use-package company-lsp
+        :init
+        (setq company-idle-delay 0.2
+              company-selection-wrap-around t
+              company-require-match 'never
+              company-lsp-async t
+              company-transformers nil
+              company-lsp-cache-candidates nil
+              lsp-highlight-symbol-at-point nil)
 
-      :config
-      (define-key company-active-map [return] 'company-complete)
-      (define-key company-active-map [tab] 'company-select-next)
-      (global-company-mode))
+        :config
+        (define-key company-active-map [return] 'company-complete)
+        (define-key company-active-map [tab] 'company-select-next)
+        (push 'company-lsp company-backends)
+        (global-company-mode))
+   #+END_SRC
+   
+   Add lsp server configurations
+   #+BEGIN_SRC emacs-lisp
+   (defun cquery//enable ()
+     (condition-case nil
+         (lsp-cquery-enable)
+       (user-error nil)))
+
+   (use-package cquery
+     :commands lsp-cquery-enable
+     :init
+     (setq cquery-executable "/usr/local/bin/cquery"
+           cquery-extra-args '("--log-file=/tmp/cq.log")
+           cquery-cache-dir "/tmp/cquery"
+           cquery-extra-init-params '(:index (:comments 2) :cacheFormat "msgpack" :completion (:detailedLabel t)))
+     (add-hook 'c-mode-hook #'cquery//enable)
+     (add-hook 'c++-mode-hook #'cquery//enable))
    #+END_SRC
    
    Flycheck for linting.
@@ -437,7 +460,7 @@
     - Use org files in =~/org= for agenda creation
    #+BEGIN_SRC emacs-lisp
    (use-package evil-org
-      :after org evil
+      :after (org evil)
 
       :init
       (setq org-agenda-files '("~/org"))
