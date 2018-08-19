@@ -16,16 +16,15 @@ Plug 'junegunn/fzf.vim'
 Plug 'rafaqz/ranger.vim'                                                        "File Browser
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }                   "Autocomplete
-Plug 'zchee/deoplete-jedi'                                                      "Deoplete source for python
-Plug 'wellle/tmux-complete.vim'                                                 "Deoplete source for tmux
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }                "Deoplete source for js
-Plug 'zchee/deoplete-clang'                                                     "Deoplete source for C/C++/Obj-C/Obj-C++
-Plug 'Shougo/neoinclude.vim'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }                                                                         "LSP support for neovim
 
 " See mappings
 Plug 'scrooloose/nerdcommenter'                                                 "Commenting text fast
 
-Plug 'neomake/neomake'                                                          "Run programs
+Plug 'neomake/neomake'                                                          "Run programs and linting
 Plug 'benjie/neomake-local-eslint.vim'                                          "Use local eslint with neomake over global one
 
 Plug 'jiangmiao/auto-pairs'                                                     "Support for pairwise modifications of branckets etc,.
@@ -66,8 +65,6 @@ Plug 'prettier/vim-prettier', {
 
 Plug 'kana/vim-arpeggio'                                                        "Define simultaneous mappings with custom delays
 Plug 'tpope/vim-sleuth'                                                         "Detect and set indentation related variables
-
-Plug 'fatih/vim-go'                                                             "Go support for vim (includes linting, completion, executions etc)
 
 Plug 'alvan/vim-closetag'                                                       "Automatically close HTML tags
 
@@ -188,11 +185,6 @@ let g:mta_filetypes = {
 
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js,*.jsx'
 
-let g:deoplete#sources#ternjs#types = 1
-let g:deoplete#sources#ternjs#filetypes = [
-                \ 'jsx',
-                \ 'javascript.jsx'
-                \ ]
 call deoplete#custom#source('ultisnips', 'matchers', ['matcher_fuzzy'])
 
 " Deoplete movement through Tab and selection through enter
@@ -201,12 +193,16 @@ let g:UltiSnipsSnippetsDir = expand("$HOME/.local/share/nvim/UltiSnips")
 let g:UltiSnipsSnippetDirectories = [expand("$HOME/.local/share/nvim/UltiSnips")]
 let g:UltiSnipsExpandTrigger = "<C-j>"
 
-let g:deoplete#sources#clang#libclang_path = "/usr/local/Cellar/llvm/5.0.0/lib/libclang.dylib"
-let g:deoplete#sources#clang#clang_header = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1"
-let g:deoplete#sources#clang#std = {'c': 'c11', 'cpp': 'c++14', 'objc': 'c11', 'objcpp': 'c++1z'}
-
 let g:livepreview_previewer = 'open -a Preview'
 let g:tex_flavor='latex'
+
+let g:LanguageClient_serverCommands = {
+\ 'cpp': ['cquery', '--log-file=/tmp/cq.log'],
+\ 'c': ['cquery', '--log-file=/tmp/cq.log']
+\ }
+let g:LanguageClient_loadSettings = 1
+let g:LanguageClient_settingsPath = expand("$HOME/.config/nvim/lsp.json")
+set formatexpr=LanguageClient_textDocument_rangeFormatting()
 
 set updatetime=100                                                              "To make vim-gutter update faster
 
@@ -276,6 +272,8 @@ nnoremap <leader>wk <C-W><C-K>
 nnoremap <leader>wl <C-W><C-L>
 nnoremap <leader>wh <C-W><C-H>
 
+" Use language client for going to definition
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 
 nnoremap <silent> <Leader>pf :Files<CR>
 nnoremap <silent> <Leader>pt :Tags<CR>
