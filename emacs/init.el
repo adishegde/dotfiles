@@ -26,10 +26,9 @@
 ; Display line numbers
 (global-display-line-numbers-mode)
 
-; Scroll options to mimic Vim
-(setq scroll-margin 7 ; Start scrolling when 8 lines away from edges
-      scroll-step 1
-      scroll-conservatively 10000)
+(use-package smooth-scrolling
+  :config
+  (smooth-scrolling-mode 1))
 
 ; Settings for backups
 (setq version-control t     ;; Use version numbers for backups.
@@ -113,6 +112,7 @@
         evil-insert-state-cursor '('nil bar)
         evil-emacs-state-modes nil ; Don't start in emacs state anywhere
         evil-motion-state-modes nil) ; Don't start in motion state anywhere
+  (hs-minor-mode t)
         
   :config
   (evil-mode 1))
