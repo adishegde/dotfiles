@@ -1,0 +1,507 @@
+* Emacs Config
+** Setup package.el
+   Import package.el and add melpa and org to package list
+   #+BEGIN_SRC emacs-lisp
+   (require 'package)
+   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+   (package-initialize)
+   #+END_SRC
+
+** Setup use-package
+   =use-package= makes it easy and efficient to manage packages
+   
+   All packages should be installed by default. Saves from writing =:ensure t= everywhere
+   #+BEGIN_SRC emacs-lisp
+   (setq use-package-always-ensure t)
+   #+END_SRC
+   
+   Load/Install =use-package=
+   #+BEGIN_SRC emacs-lisp
+   (unless (package-installed-p 'use-package)
+   (package-refresh-contents)
+   (package-install 'use-package))
+   (eval-when-compile
+      (require 'use-package))
+   #+END_SRC
+
+** Customize
+   Ask customize to use another file i.e. =custom.el=. Prevents cluttering in =init.el=.
+   #+BEGIN_SRC emacs-lisp
+   (setq custom-file "~/.emacs.d/custom.el")
+   (load custom-file)
+   #+END_SRC
+
+** Sane defaults
+   Remove toolbar and scrollbars
+   #+BEGIN_SRC emacs-lisp
+   (toggle-scroll-bar -1) 
+   (tool-bar-mode -1)
+   #+END_SRC
+   
+   Refresh file on changes
+   #+BEGIN_SRC emacs-lisp
+   (global-auto-revert-mode)
+   #+END_SRC
+
+   Follow symlinks to actual file (which is in version control)
+   #+BEGIN_SRC emacs-lisp
+   (setq vc-follow-symlinks t)
+   #+END_SRC
+
+   Use option key as meta in Mac
+   #+BEGIN_SRC emacs-lisp
+   (setq mac-option-key-is-meta nil
+         mac-command-key-is-meta t
+         mac-command-modifier 'meta
+         mac-option-modifier nil)
+   #+END_SRC
+
+   Display line numbers
+   #+BEGIN_SRC emacs-lisp
+   (global-display-line-numbers-mode)
+   #+END_SRC
+
+   Backup related settings:
+    - Store backups in =~/.emacs.d/backups=
+    - Keep last 5 versions
+    - Keep 0 old versions
+    - Delete old versions
+    - Backup by copying
+    - Save autosave files in =~/.emacs.d/autosaves=
+   #+BEGIN_SRC emacs-lisp
+   (setq version-control t     
+         backup-directory-alist `(("." . "~/.emacs.d/backups/"))
+         kept-new-versions 5  
+         kept-old-versions 0 
+         delete-old-versions t
+         backup-by-copying t
+         auto-save-file-name-transforms `((".*" "~/.emacs.d/autosaves/")))
+   #+END_SRC
+   
+   #+BEGIN_SRC emacs-lisp
+   (use-package exec-path-from-shell
+      :config
+      (when (memq window-system '(mac ns x))
+         (exec-path-from-shell-initialize)))
+   #+END_SRC
+
+** Scrolling
+   Neovim like scrolling via =smooth-scrolling=.
+   #+BEGIN_SRC emacs-lisp
+   (use-package smooth-scrolling
+      :config
+      (smooth-scrolling-mode 1))
+   #+END_SRC
+
+** Appearence
+   Custom themes installed as packages
+   #+BEGIN_SRC emacs-lisp
+   (use-package gruvbox-theme)
+   (use-package atom-one-dark-theme)
+   #+END_SRC
+   
+   Icon support mainly used by spaceline
+   #+BEGIN_SRC emacs-lisp
+   (use-package all-the-icons)
+   #+END_SRC
+
+   Indent guides
+   #+BEGIN_SRC emacs-lisp
+   (use-package highlight-indent-guides
+      :init
+      (setq highlight-indent-guides-method 'character)
+      :config
+      (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
+   #+END_SRC
+   
+   =spaceline= to beautify mode-line and =spaceline-all-the-icons= for icon support.
+   #+BEGIN_SRC emacs-lisp
+   (use-package spaceline
+      :config
+      (spaceline-spacemacs-theme)
+      (spaceline-helm-mode))
+
+   (use-package spaceline-all-the-icons 
+      :after spaceline
+      :init
+      (setq spaceline-all-the-icons-separator-type 'none)
+      :config (spaceline-all-the-icons-theme))
+   #+END_SRC
+
+   Ligature support. Requires Fira Code Symbol to be installed.
+   Picked up from fira code wiki.
+   #+BEGIN_SRC emacs-lisp
+   ;; This works when using emacs --daemon + emacsclient
+   (add-hook 'after-make-frame-functions (lambda (frame) (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")))
+   ;; This works when using emacs without server/client
+   (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")
+   ;; I haven't found one statement that makes both of the above situations work, so I use both for now
+
+   (defconst fira-code-font-lock-keywords-alist
+   (mapcar (lambda (regex-char-pair)
+               `(,(car regex-char-pair)
+               (0 (prog1 ()
+                     (compose-region (match-beginning 1)
+                                    (match-end 1)
+                                    ;; The first argument to concat is a string containing a literal tab
+                                    ,(concat "	" (list (decode-char 'ucs (cadr regex-char-pair)))))))))
+            '(("\\(www\\)"                   #Xe100)
+               ("[^/]\\(\\*\\*\\)[^/]"        #Xe101)
+               ("\\(\\*\\*\\*\\)"             #Xe102)
+               ("\\(\\*\\*/\\)"               #Xe103)
+               ("\\(\\*>\\)"                  #Xe104)
+               ("[^*]\\(\\*/\\)"              #Xe105)
+               ("\\(\\\\\\\\\\)"              #Xe106)
+               ("\\(\\\\\\\\\\\\\\)"          #Xe107)
+               ("\\({-\\)"                    #Xe108)
+               ("\\(\\[\\]\\)"                #Xe109)
+               ("\\(::\\)"                    #Xe10a)
+               ("\\(:::\\)"                   #Xe10b)
+               ("[^=]\\(:=\\)"                #Xe10c)
+               ("\\(!!\\)"                    #Xe10d)
+               ("\\(!=\\)"                    #Xe10e)
+               ("\\(!==\\)"                   #Xe10f)
+               ("\\(-}\\)"                    #Xe110)
+               ("\\(--\\)"                    #Xe111)
+               ("\\(---\\)"                   #Xe112)
+               ("\\(-->\\)"                   #Xe113)
+               ("[^-]\\(->\\)"                #Xe114)
+               ("\\(->>\\)"                   #Xe115)
+               ("\\(-<\\)"                    #Xe116)
+               ("\\(-<<\\)"                   #Xe117)
+               ("\\(-~\\)"                    #Xe118)
+               ("\\(#{\\)"                    #Xe119)
+               ("\\(#\\[\\)"                  #Xe11a)
+               ("\\(##\\)"                    #Xe11b)
+               ("\\(###\\)"                   #Xe11c)
+               ("\\(####\\)"                  #Xe11d)
+               ("\\(#(\\)"                    #Xe11e)
+               ("\\(#\\?\\)"                  #Xe11f)
+               ("\\(#_\\)"                    #Xe120)
+               ("\\(#_(\\)"                   #Xe121)
+               ("\\(\\.-\\)"                  #Xe122)
+               ("\\(\\.=\\)"                  #Xe123)
+               ("\\(\\.\\.\\)"                #Xe124)
+               ("\\(\\.\\.<\\)"               #Xe125)
+               ("\\(\\.\\.\\.\\)"             #Xe126)
+               ("\\(\\?=\\)"                  #Xe127)
+               ("\\(\\?\\?\\)"                #Xe128)
+               ("\\(;;\\)"                    #Xe129)
+               ("\\(/\\*\\)"                  #Xe12a)
+               ("\\(/\\*\\*\\)"               #Xe12b)
+               ("\\(/=\\)"                    #Xe12c)
+               ("\\(/==\\)"                   #Xe12d)
+               ("\\(/>\\)"                    #Xe12e)
+               ("\\(//\\)"                    #Xe12f)
+               ("\\(///\\)"                   #Xe130)
+               ("\\(&&\\)"                    #Xe131)
+               ("\\(||\\)"                    #Xe132)
+               ("\\(||=\\)"                   #Xe133)
+               ("[^|]\\(|=\\)"                #Xe134)
+               ("\\(|>\\)"                    #Xe135)
+               ("\\(\\^=\\)"                  #Xe136)
+               ("\\(\\$>\\)"                  #Xe137)
+               ("\\(\\+\\+\\)"                #Xe138)
+               ("\\(\\+\\+\\+\\)"             #Xe139)
+               ("\\(\\+>\\)"                  #Xe13a)
+               ("\\(=:=\\)"                   #Xe13b)
+               ("[^!/]\\(==\\)[^>]"           #Xe13c)
+               ("\\(===\\)"                   #Xe13d)
+               ("\\(==>\\)"                   #Xe13e)
+               ("[^=]\\(=>\\)"                #Xe13f)
+               ("\\(=>>\\)"                   #Xe140)
+               ("\\(<=\\)"                    #Xe141)
+               ("\\(=<<\\)"                   #Xe142)
+               ("\\(=/=\\)"                   #Xe143)
+               ("\\(>-\\)"                    #Xe144)
+               ("\\(>=\\)"                    #Xe145)
+               ("\\(>=>\\)"                   #Xe146)
+               ("[^-=]\\(>>\\)"               #Xe147)
+               ("\\(>>-\\)"                   #Xe148)
+               ("\\(>>=\\)"                   #Xe149)
+               ("\\(>>>\\)"                   #Xe14a)
+               ("\\(<\\*\\)"                  #Xe14b)
+               ("\\(<\\*>\\)"                 #Xe14c)
+               ("\\(<|\\)"                    #Xe14d)
+               ("\\(<|>\\)"                   #Xe14e)
+               ("\\(<\\$\\)"                  #Xe14f)
+               ("\\(<\\$>\\)"                 #Xe150)
+               ("\\(<!--\\)"                  #Xe151)
+               ("\\(<-\\)"                    #Xe152)
+               ("\\(<--\\)"                   #Xe153)
+               ("\\(<->\\)"                   #Xe154)
+               ("\\(<\\+\\)"                  #Xe155)
+               ("\\(<\\+>\\)"                 #Xe156)
+               ("\\(<=\\)"                    #Xe157)
+               ("\\(<==\\)"                   #Xe158)
+               ("\\(<=>\\)"                   #Xe159)
+               ("\\(<=<\\)"                   #Xe15a)
+               ("\\(<>\\)"                    #Xe15b)
+               ("[^-=]\\(<<\\)"               #Xe15c)
+               ("\\(<<-\\)"                   #Xe15d)
+               ("\\(<<=\\)"                   #Xe15e)
+               ("\\(<<<\\)"                   #Xe15f)
+               ("\\(<~\\)"                    #Xe160)
+               ("\\(<~~\\)"                   #Xe161)
+               ("\\(</\\)"                    #Xe162)
+               ("\\(</>\\)"                   #Xe163)
+               ("\\(~@\\)"                    #Xe164)
+               ("\\(~-\\)"                    #Xe165)
+               ("\\(~=\\)"                    #Xe166)
+               ("\\(~>\\)"                    #Xe167)
+               ("[^<]\\(~~\\)"                #Xe168)
+               ("\\(~~>\\)"                   #Xe169)
+               ("\\(%%\\)"                    #Xe16a)
+            ;; ("\\(x\\)"                   #Xe16b) This ended up being hard to do properly so i'm leaving it out.
+               ("[^:=]\\(:\\)[^:=]"           #Xe16c)
+               ("[^\\+<>]\\(\\+\\)[^\\+<>]"   #Xe16d)
+               ("[^\\*/<>]\\(\\*\\)[^\\*/<>]" #Xe16f))))
+
+   (defun add-fira-code-symbol-keywords ()
+   "Add fira code symbols."
+   (font-lock-add-keywords nil fira-code-font-lock-keywords-alist))
+
+   (add-hook 'prog-mode-hook
+            #'add-fira-code-symbol-keywords)
+   #+END_SRC
+
+** Basic editor settings
+   Matching pair support.
+   #+BEGIN_SRC emacs-lisp
+   (use-package smartparens
+      :config
+      (smartparens-global-mode))
+   #+END_SRC
+   
+   Automatically detect and set indentation (one of the best packages).
+   #+BEGIN_SRC emacs-lisp
+   (use-package dtrt-indent
+      :config
+      (dtrt-indent-global-mode))
+   #+END_SRC
+   
+   Project management using =projectile=.
+   #+BEGIN_SRC emacs-lisp
+   (use-package projectile
+      :config
+      (projectile-mode +1))
+   #+END_SRC
+   
+   Parse source code to generate syntax trees using semantic package.
+   #+BEGIN_SRC emacs-lisp
+   (semantic-mode)
+   #+END_SRC
+   
+** Evil
+   Evil to emulate vim-like editing.
+   #+BEGIN_SRC emacs-lisp
+   (use-package evil
+      :after evil-leader ; Ensures that evil-leader works in all buffers
+      :init
+      (setq evil-search-module 'evil-search
+            evil-insert-state-cursor '('nil bar)
+            evil-emacs-state-modes nil ; Don't start in emacs state anywhere
+            evil-motion-state-modes nil) ; Don't start in motion state anywhere
+
+      (add-hook 'prog-mode-hook #'hs-minor-mode) ; Folding support by enabling hideshow mode
+
+      :config
+      (evil-mode 1))
+   #+END_SRC
+   
+   Evil-leader for easy management of =leader= bindings.
+   Evil leader binding are spread throughout the config. The summary is:
+    - Project related bindings start with =p=. (check helm-projectile)
+    - Buffer related bindings start with =b=.
+    - Window related bindings start with =w=.
+    - Ranger related bindings start with =r=.
+    - File related bindings start with =f=.
+    - =<leader>t= is for Vim's tagbar like functionality.
+   #+BEGIN_SRC emacs-lisp
+   (use-package evil-leader
+      :init
+      (setq evil-want-integration nil) ; Required by evil-collection, assigned here since this is loaded before evil
+      
+      :config
+      (evil-leader/set-leader "<SPC>")
+      (evil-leader/set-key
+         "bb" 'helm-buffers-list
+         "bd" 'kill-this-buffer
+         "t" 'helm-semantic-or-imenu
+         "ff" 'helm-find-files
+         "wl" 'evil-window-right
+         "wh" 'evil-window-left
+         "wk" 'evil-window-up
+         "wj" 'evil-window-down)
+      (global-evil-leader-mode))
+   #+END_SRC
+
+   Surround operator support.
+   #+BEGIN_SRC emacs-lisp
+   (use-package evil-surround
+      :after evil
+      :config
+      (global-evil-surround-mode 1))
+   #+END_SRC
+
+   Use =jk= to escape. I mainly use it because =jk= rolls of when you type.
+   #+BEGIN_SRC emacs-lisp
+   (use-package key-chord
+      :after evil
+      :config
+      (key-chord-mode 1)
+      (key-chord-define evil-normal-state-map "jk" 'evil-force-normal-state)
+      (key-chord-define evil-visual-state-map "jk" 'evil-change-to-previous-state)
+      (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
+      (key-chord-define evil-replace-state-map "jk" 'evil-normal-state))
+   #+END_SRC
+
+   Collection of settings to make evil work as expected in various modes.
+   #+BEGIN_SRC emacs-lisp
+   (use-package evil-collection
+      :after evil
+      :init
+      (setq evil-collection-company-use-tng nil)
+      :config
+      (evil-collection-init))
+   #+END_SRC
+
+   Evil support for smartparens.
+   #+BEGIN_SRC emacs-lisp
+   (use-package evil-smartparens
+      :after smartparens
+      :config
+      (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
+   #+END_SRC
+
+** Helm
+   Helm provides a fuzzy search interface that can be used with almost anything.
+   #+BEGIN_SRC emacs-lisp
+   (use-package helm
+      :config
+      (helm-mode 1)
+      (setq helm-autoresize-mode t)
+      (global-set-key (kbd "M-x") #'helm-M-x)
+      (define-key helm-map (kbd "S-SPC") 'helm-toggle-visible-mark))
+   #+END_SRC
+   
+   Project wide search using helm-ag.
+   #+BEGIN_SRC emacs-lisp
+   (use-package helm-ag
+      :after helm)
+   #+END_SRC
+   
+   Projectile and Helm integration.
+   #+BEGIN_SRC emacs-lisp
+   (use-package helm-projectile
+      :after projectile helm evil-leader
+      :config
+      (helm-projectile-on)
+      (evil-leader/set-key
+         "ps" 'helm-projectile-ag
+         "pf" 'helm-projectile-find-file
+         "pp" 'helm-projectile-switch-project
+      ))
+   #+END_SRC
+
+** Autocomplete and Linting
+   Company for autocomplete.
+   #+BEGIN_SRC emacs-lisp
+   (use-package company
+      :init
+      (setq company-idle-delay 0.2
+            company-selection-wrap-around t
+            company-require-match 'never)
+
+      :config
+      (define-key company-active-map [return] 'company-complete)
+      (define-key company-active-map [tab] 'company-select-next)
+      (global-company-mode))
+   #+END_SRC
+   
+   Flycheck for linting.
+   #+BEGIN_SRC emacs-lisp
+   (use-package flycheck
+      :after evil-leader
+      :ensure t
+      :init (global-flycheck-mode)
+      :config
+      (evil-leader/set-key
+         "en" 'flycheck-next-error
+         "ep" 'flycheck-previous-error))
+   #+END_SRC
+
+** Org mode
+   Evil support for org-mode.
+    - Bind =<leader>tt= to cycle through Todos.
+    - Use org files in =~/org= for agenda creation
+   #+BEGIN_SRC emacs-lisp
+   (use-package evil-org
+      :after org evil
+
+      :init
+      (setq org-agenda-files '("~/org"))
+
+      :config
+      (add-hook 'org-mode-hook 'evil-org-mode)
+      (add-hook 'evil-org-mode-hook
+                  (lambda ()
+                  (evil-org-set-key-theme)))
+      (require 'evil-org-agenda)
+      (evil-org-agenda-set-keys)
+      (evil-leader/set-key-for-mode 'org-mode "tt" 'org-todo))
+   #+END_SRC
+   
+   Summary of my most used bindings.
+   | Binding    | Explanation                   |
+   |------------+-------------------------------|
+   | g[h/j/k/l] | Element based movement        |
+   | M-ret      | insert new line smartly       |
+   | M-[h/l]    | Promote/Demote single heading |
+   | M-[h/l]    | Move columns                  |
+   | [>>/<<]    | Promote/Demote single line    |
+   | M-S-[h/l]  | Promote/Demote subtree        |
+   | M-S-[h/l]  | Add/Delete columns            |
+   | M-[k/j]    | Move line/subtree up smartly  |
+   | M-S-[k/j]  | Move heading only             |
+   | [)/(]      | Move between cells            |
+  
+   | Text Objects | Examples                         |
+   |--------------+----------------------------------|
+   | e            | link, markup, table cell         |
+   | E            | table row, paragraph, code block |
+   | r            | item list                        |
+   | R            | Subtree including header, table  |
+
+   Create HTML from org-file
+   #+BEGIN_SRC emacs-lisp
+   (use-package htmlize)
+   #+END_SRC
+
+** Dired
+   Emulate ranger in dired. I prefer to use ranger than file trees.
+   #+BEGIN_SRC emacs-lisp
+     (use-package ranger
+        :after evil-leader
+        :init
+        (setq ranger-cleanup-on-disable t)
+        :config
+        (evil-leader/set-key "rr" 'ranger))
+   #+END_SRC
+
+** PDF support
+   Pdf-tools provides a lot of functionality for pdf.
+   #+BEGIN_SRC emacs-lisp
+   (use-package tablist)
+
+   ; Pdf-tools
+   (use-package pdf-tools
+      :after tablist
+      :init
+      (setenv "PKG_CONFIG_PATH" "/usr/local/Cellar/zlib/1.2.8/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig"))
+   #+END_SRC 
+
+   Set Ghostscript path for doc-view
+   #+BEGIN_SRC emacs-lisp
+   (setq doc-view-ghostscript-program "/usr/local/bin/gs")
+   #+END_SRC
