@@ -1,8 +1,20 @@
+; Disable tool bar
+(tool-bar-mode -1)
+
+; Disable scroll bar
+(toggle-scroll-bar -1) 
+
+; Enable auto revert mode
+(global-auto-revert-mode)
+
+; Follow symlinks
+(setq vc-follow-symlinks t)
+
 ; Import package.el and add melpa to package list
+(setq use-package-always-ensure t) ; All packages should be installed by default
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
-(setq use-package-always-ensure t) ; All packages should be installed by default
 
 ; Installing use-package to make package management easier and efficient
 (unless (package-installed-p 'use-package)
@@ -42,6 +54,16 @@
 ; Themes
 (use-package gruvbox-theme)
 (use-package atom-one-dark-theme)
+
+(use-package htmlize)
+
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode)
+  :config
+  (evil-leader/set-key
+    "en" 'flycheck-next-error
+    "ep" 'flycheck-previous-error))
 
 ; Add icon support
 (use-package all-the-icons)
@@ -112,7 +134,8 @@
         evil-insert-state-cursor '('nil bar)
         evil-emacs-state-modes nil ; Don't start in emacs state anywhere
         evil-motion-state-modes nil) ; Don't start in motion state anywhere
-  (hs-minor-mode t)
+
+  (add-hook 'prog-mode-hook #'hs-minor-mode) ; Folding
         
   :config
   (evil-mode 1))
@@ -345,6 +368,7 @@
             ("[^\\*/<>]\\(\\*\\)[^\\*/<>]" #Xe16f))))
 
 (defun add-fira-code-symbol-keywords ()
+  "Add fira code symbols."
   (font-lock-add-keywords nil fira-code-font-lock-keywords-alist))
 
 (add-hook 'prog-mode-hook
