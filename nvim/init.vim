@@ -78,8 +78,6 @@ Plug 'airblade/vim-gitgutter'                                                   
 
 Plug 'SirVer/ultisnips'                                                         "Snippet engine neovim
 
-Plug 'tpope/vim-fugitive'
-
 Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }                          " Live preview for LaTeX
 
 Plug 'tomlion/vim-solidity'                                                     " Solidity syntax support
@@ -203,6 +201,7 @@ let g:LanguageClient_serverCommands = {
 let g:LanguageClient_loadSettings = 1
 let g:LanguageClient_settingsPath = expand("$HOME/.config/nvim/lsp.json")
 set formatexpr=LanguageClient_textDocument_rangeFormatting()
+let g:LanguageClient_diagnosticsEnable = 0
 
 set updatetime=100                                                              "To make vim-gutter update faster
 
@@ -265,7 +264,9 @@ map <leader>rr :RangerEdit<cr>
 
 nmap <leader>t :TagbarToggle<cr>
 
+" Use tab for moving through deoplete suggestions
 inoremap <expr><tab> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 nnoremap <leader>wj <C-W><C-J>
 nnoremap <leader>wk <C-W><C-K>
@@ -284,3 +285,37 @@ nnoremap <silent> <Leader>bt :BTags<CR>
 nnoremap <silent> <Leader>bc :BCommits<CR>
 nnoremap <silent> <Leader>bd :bd<CR>
 nnoremap <silent> <Leader>bn :enew<CR>
+
+" This makes the completions provided by LSP compatible with ultisnips
+function! ExpandLspSnippet()
+    call UltiSnips#ExpandSnippetOrJump()
+    if !pumvisible() || empty(v:completed_item)
+        return ''
+    endif
+
+    " only expand Lsp if UltiSnips#ExpandSnippetOrJump not effect.
+    let l:value = v:completed_item['word']
+    let l:matched = len(l:value)
+    if l:matched <= 0
+        return ''
+    endif
+
+    " remove inserted chars before expand snippet
+    if col('.') == col('$')
+        let l:matched -= 1
+        exec 'normal! ' . l:matched . 'Xx'
+    else
+        exec 'normal! ' . l:matched . 'X'
+    endif
+
+    if col('.') == col('$') - 1
+        " move to $ if at the end of line.
+        call cursor(line('.'), col('$'))
+    endif
+
+    " expand snippet now.
+    call UltiSnips#Anon(l:value)
+    return ''
+endfunction
+
+imap <C-k> <C-R>=ExpandLspSnippet()<CR>
