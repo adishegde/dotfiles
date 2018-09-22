@@ -78,9 +78,16 @@ Plug 'airblade/vim-gitgutter'                                                   
 
 Plug 'SirVer/ultisnips'                                                         "Snippet engine neovim
 
-Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }                          " Live preview for LaTeX
+":NeoTex to compile, NeoTexOn to start live updates and NeoTexOff to stop live
+"updates
+Plug 'donRaphaco/neotex', { 'for': 'tex' }                                      "Live latex preview
 
-Plug 'tomlion/vim-solidity'                                                     " Solidity syntax support
+Plug 'tomlion/vim-solidity'                                                     "Solidity syntax support
+
+Plug 'vim-pandoc/vim-pandoc'                                                    "Pandoc markdown support and syntax highlight
+Plug 'vim-pandoc/vim-pandoc-syntax'
+
+Plug 'dhruvasagar/vim-table-mode'                                               "Table creation made easy
 
 Plug 'ryanoasis/vim-devicons'                                                   "Icons for plugins
 
@@ -136,7 +143,7 @@ let g:python3_host_prog=expand("$HOME/.local/share/nvim/python3/bin/python3")
 
 let g:deoplete#enable_at_startup = 1                                            "Enable deoplete at startup
 
-let g:indentLine_concealcursor='nc'
+let g:indentLine_fileTypeExclude = ['json', 'tex']
 
 let g:NERDCompactSexyComs = 1                                                   "Good looking multiline comments
 
@@ -191,12 +198,13 @@ let g:UltiSnipsSnippetsDir = expand("$HOME/.local/share/nvim/UltiSnips")
 let g:UltiSnipsSnippetDirectories = [expand("$HOME/.local/share/nvim/UltiSnips")]
 let g:UltiSnipsExpandTrigger = "<C-j>"
 
-let g:livepreview_previewer = 'open -a Preview'
-let g:tex_flavor='latex'
+let g:tex_flavor = 'latex'
+let g:pandoc#syntax#conceal#use = 0
 
 let g:LanguageClient_serverCommands = {
 \ 'cpp': ['cquery', '--log-file=/tmp/cq.log'],
-\ 'c': ['cquery', '--log-file=/tmp/cq.log']
+\ 'c': ['cquery', '--log-file=/tmp/cq.log'],
+\ 'javascript': ['javascript-typescript-stdio', '--logfile=/tmp/jslsp.log']
 \ }
 let g:LanguageClient_loadSettings = 1
 let g:LanguageClient_settingsPath = expand("$HOME/.config/nvim/lsp.json")
@@ -244,6 +252,8 @@ autocmd vimrc FocusGained,BufEnter * checktime                                  
 autocmd vimrc BufWritePre * :call StripTrailingWhitespaces()                    "Auto-remove trailing spaces
 
 autocmd Filetype json let g:indentLine_enabled = 0                              "Indent lines hides quotes in json
+
+autocmd FileType tex setlocal spell spelllang=en_us                             "Spell checking in tex files
 
 " ================ Functions ========================
 
