@@ -87,8 +87,6 @@ Plug 'tomlion/vim-solidity'                                                     
 Plug 'vim-pandoc/vim-pandoc'                                                    "Pandoc markdown support and syntax highlight
 Plug 'vim-pandoc/vim-pandoc-syntax'
 
-Plug 'dhruvasagar/vim-table-mode'                                               "Table creation made easy
-
 Plug 'ryanoasis/vim-devicons'                                                   "Icons for plugins
 
 call plug#end()
@@ -156,6 +154,7 @@ let g:airline_theme='onedark'
 call neomake#configure#automake('w')                                            "Call neomake maker on write
 "let g:neomake_open_list = 2                                                     "Open location list automatically
 let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_tex_enabled_makers = ['lacheck']
 
 let g:tmuxcomplete#trigger = ''                                                 "tmux complete should work with only deoplete, no need of special bindings
 
@@ -196,15 +195,22 @@ call deoplete#custom#source('ultisnips', 'matchers', ['matcher_fuzzy'])
 " Ultisnips completion through Ctrl+j
 let g:UltiSnipsSnippetsDir = expand("$HOME/.local/share/nvim/UltiSnips")
 let g:UltiSnipsSnippetDirectories = [expand("$HOME/.local/share/nvim/UltiSnips")]
-let g:UltiSnipsExpandTrigger = "<C-j>"
+let g:UltiSnipsExpandTrigger = "<C-k>"
+let g:UltiSnipsJumpForwardTrigger = "<C-l>"
+let g:UltiSnipsJumpBackwardTrigger = "<C-h>"
 
 let g:tex_flavor = 'latex'
 let g:pandoc#syntax#conceal#use = 0
 
+let g:neotex_latexdiff = 1
+let g:neotex_pdflatex_alternative = 'xelatex'
+let g:neotex_subfile = 1
+
 let g:LanguageClient_serverCommands = {
 \ 'cpp': ['cquery', '--log-file=/tmp/cq.log'],
 \ 'c': ['cquery', '--log-file=/tmp/cq.log'],
-\ 'javascript': ['javascript-typescript-stdio', '--logfile=/tmp/jslsp.log']
+\ 'javascript': ['javascript-typescript-stdio', '--logfile=/tmp/jslsp.log'],
+\ 'python': ['python', '-m', 'pyls']
 \ }
 let g:LanguageClient_loadSettings = 1
 let g:LanguageClient_settingsPath = expand("$HOME/.config/nvim/lsp.json")
@@ -253,7 +259,8 @@ autocmd vimrc BufWritePre * :call StripTrailingWhitespaces()                    
 
 autocmd Filetype json let g:indentLine_enabled = 0                              "Indent lines hides quotes in json
 
-autocmd FileType tex setlocal spell spelllang=en_us                             "Spell checking in tex files
+autocmd FileType tex setlocal spell spelllang=en_gb                             "Spell checking in tex files
+autocmd FileType tex syntax spell toplevel                                      "Spell checking in tex files
 
 " ================ Functions ========================
 
@@ -298,7 +305,7 @@ nnoremap <silent> <Leader>bn :enew<CR>
 
 " This makes the completions provided by LSP compatible with ultisnips
 function! ExpandLspSnippet()
-    call UltiSnips#ExpandSnippetOrJump()
+    call UltiSnips#ExpandSnippet()
     if !pumvisible() || empty(v:completed_item)
         return ''
     endif
@@ -328,4 +335,4 @@ function! ExpandLspSnippet()
     return ''
 endfunction
 
-imap <C-k> <C-R>=ExpandLspSnippet()<CR>
+imap <C-j> <C-R>=ExpandLspSnippet()<CR>
