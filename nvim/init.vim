@@ -217,6 +217,18 @@ let g:LanguageClient_settingsPath = expand("$HOME/.config/nvim/lsp.json")
 set formatexpr=LanguageClient_textDocument_rangeFormatting()
 let g:LanguageClient_diagnosticsEnable = 0
 
+let g:prettier#config#print_width = 80
+let g:prettier#config#tab_width = 4
+let g:prettier#config#use_tabs = 'false'
+let g:prettier#config#semi = 'true'
+let g:prettier#config#single_quote = 'false'
+let g:prettier#config#bracket_spacing = 'true'
+let g:prettier#config#jsx_bracket_same_line = 'false'
+let g:prettier#config#arrow_parens = 'avoid'
+let g:prettier#config#trailing_comma = 'none'
+let g:prettier#config#parser = 'babylon'
+let g:prettier#config#prose_wrap = 'preserve'
+
 set updatetime=100                                                              "To make vim-gutter update faster
 
 " ================ Persistent Undo ==================
