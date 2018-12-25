@@ -15,11 +15,7 @@ Plug 'junegunn/fzf.vim'
 " See mappings
 Plug 'rafaqz/ranger.vim'                                                        "File Browser
 
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }                   "Autocomplete
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }                                                                         "LSP support for neovim
+Plug 'neoclide/coc.nvim', {'do': 'yarn install'}                                "Autocompletion
 
 " See mappings
 Plug 'scrooloose/nerdcommenter'                                                 "Commenting text fast
@@ -128,6 +124,8 @@ set foldmethod=syntax                                                           
 set nofoldenable
 set colorcolumn=80
 set t_Co=256
+set cmdheight=2                                                                 "Better display for messages
+set signcolumn=yes
 
 syntax on                                                                       "turn on syntax highlighting
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1                                               "This line enables the true color support.
@@ -138,8 +136,6 @@ hi ColorColumn ctermbg=237 guibg=#3c3836
 
 let g:python_host_prog=expand("$HOME/.local/share/nvim/python2/bin/python")     "Path to python interpretters
 let g:python3_host_prog=expand("$HOME/.local/share/nvim/python3/bin/python3")
-
-let g:deoplete#enable_at_startup = 1                                            "Enable deoplete at startup
 
 let g:indentLine_fileTypeExclude = ['json', 'tex']
 
@@ -155,8 +151,6 @@ call neomake#configure#automake('w')                                            
 "let g:neomake_open_list = 2                                                     "Open location list automatically
 let g:neomake_javascript_enabled_makers = ['eslint']
 let g:neomake_tex_enabled_makers = ['lacheck']
-
-let g:tmuxcomplete#trigger = ''                                                 "tmux complete should work with only deoplete, no need of special bindings
 
 set encoding=utf8                                                               "Settings for devicons
 set guifont=<FONT_NAME>:h<FONT_SIZE>
@@ -189,9 +183,6 @@ let g:mta_filetypes = {
 
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js,*.jsx'
 
-call deoplete#custom#source('ultisnips', 'matchers', ['matcher_fuzzy'])
-
-" Deoplete movement through Tab and selection through enter
 " Ultisnips completion through Ctrl+j
 let g:UltiSnipsSnippetsDir = expand("$HOME/.local/share/nvim/UltiSnips")
 let g:UltiSnipsSnippetDirectories = [expand("$HOME/.local/share/nvim/UltiSnips")]
@@ -205,17 +196,6 @@ let g:pandoc#syntax#conceal#use = 0
 let g:neotex_latexdiff = 1
 let g:neotex_pdflatex_alternative = 'xelatex'
 let g:neotex_subfile = 1
-
-let g:LanguageClient_serverCommands = {
-\ 'cpp': ['cquery', '--log-file=/tmp/cq.log'],
-\ 'c': ['cquery', '--log-file=/tmp/cq.log'],
-\ 'javascript': ['javascript-typescript-stdio', '--logfile=/tmp/jslsp.log'],
-\ 'python': ['python', '-m', 'pyls']
-\ }
-let g:LanguageClient_loadSettings = 1
-let g:LanguageClient_settingsPath = expand("$HOME/.config/nvim/lsp.json")
-set formatexpr=LanguageClient_textDocument_rangeFormatting()
-let g:LanguageClient_diagnosticsEnable = 0
 
 let g:prettier#config#print_width = 80
 let g:prettier#config#tab_width = 4
@@ -274,6 +254,8 @@ autocmd Filetype json let g:indentLine_enabled = 0                              
 autocmd FileType tex setlocal spell spelllang=en_gb                             "Spell checking in tex files
 autocmd FileType tex syntax spell toplevel                                      "Spell checking in tex files
 
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
 " ================ Functions ========================
 
 function! StripTrailingWhitespaces()
@@ -293,17 +275,10 @@ map <leader>rr :RangerEdit<cr>
 
 nmap <leader>t :TagbarToggle<cr>
 
-" Use tab for moving through deoplete suggestions
-inoremap <expr><tab> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
 nnoremap <leader>wj <C-W><C-J>
 nnoremap <leader>wk <C-W><C-K>
 nnoremap <leader>wl <C-W><C-L>
 nnoremap <leader>wh <C-W><C-H>
-
-" Use language client for going to definition
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 
 nnoremap <silent> <Leader>pf :Files<CR>
 nnoremap <silent> <Leader>pt :Tags<CR>
@@ -315,36 +290,36 @@ nnoremap <silent> <Leader>bc :BCommits<CR>
 nnoremap <silent> <Leader>bd :bd<CR>
 nnoremap <silent> <Leader>bn :enew<CR>
 
-" This makes the completions provided by LSP compatible with ultisnips
-function! ExpandLspSnippet()
-    call UltiSnips#ExpandSnippet()
-    if !pumvisible() || empty(v:completed_item)
-        return ''
-    endif
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
-    " only expand Lsp if UltiSnips#ExpandSnippetOrJump not effect.
-    let l:value = v:completed_item['word']
-    let l:matched = len(l:value)
-    if l:matched <= 0
-        return ''
-    endif
+nmap <leader>rn <Plug>(coc-rename)
 
-    " remove inserted chars before expand snippet
-    if col('.') == col('$')
-        let l:matched -= 1
-        exec 'normal! ' . l:matched . 'Xx'
-    else
-        exec 'normal! ' . l:matched . 'X'
-    endif
-
-    if col('.') == col('$') - 1
-        " move to $ if at the end of line.
-        call cursor(line('.'), col('$'))
-    endif
-
-    " expand snippet now.
-    call UltiSnips#Anon(l:value)
-    return ''
+" Use K for show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
 endfunction
 
-imap <C-j> <C-R>=ExpandLspSnippet()<CR>
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
