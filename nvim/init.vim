@@ -39,7 +39,6 @@ Plug 'tpope/vim-surround'                                                       
 " {i/a}{pair char}, use a for arguments
 Plug 'wellle/targets.vim'                                                       "Defines text objects for easy manipulation
 
-Plug 'sjl/vitality.vim'                                                         "Improve vim, tmux and iTerm compatibility
 Plug 'haya14busa/is.vim'                                                        "Improves incremental search
 
 Plug 'ludovicchabant/vim-gutentags'                                             "Tag file generation automated
@@ -186,9 +185,6 @@ let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js,*.jsx'
 " Ultisnips completion through Ctrl+j
 let g:UltiSnipsSnippetsDir = expand("$HOME/.local/share/nvim/UltiSnips")
 let g:UltiSnipsSnippetDirectories = [expand("$HOME/.local/share/nvim/UltiSnips")]
-let g:UltiSnipsExpandTrigger = "<C-k>"
-let g:UltiSnipsJumpForwardTrigger = "<C-l>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-h>"
 
 let g:tex_flavor = 'latex'
 let g:pandoc#syntax#conceal#use = 0
@@ -308,18 +304,11 @@ function! s:show_documentation()
   endif
 endfunction
 
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+" Use <C-j> and <C-k> for navigation
+inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 
 " Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Coc only does snippet and additional edit on confirm. Force select before
+" confirm
+ inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
