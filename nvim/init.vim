@@ -1,8 +1,7 @@
 "================ Persistent Undo ==================
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'pangloss/vim-javascript'                                                  "Javascript syntax and indentation improvement
-Plug 'maxmellon/vim-jsx-pretty'
+Plug 'sheerun/vim-polyglot'                                                     "Language packs
 
 Plug 'morhetz/gruvbox'                                                          "Color scheme
 Plug 'joshdick/onedark.vim'
@@ -77,8 +76,6 @@ Plug 'SirVer/ultisnips'                                                         
 "updates
 Plug 'donRaphaco/neotex', { 'for': 'tex' }                                      "Live latex preview
 
-Plug 'tomlion/vim-solidity'                                                     "Solidity syntax support
-
 Plug 'vim-pandoc/vim-pandoc'                                                    "Pandoc markdown support and syntax highlight
 Plug 'vim-pandoc/vim-pandoc-syntax'
 
@@ -129,7 +126,7 @@ set signcolumn=yes
 syntax on                                                                       "turn on syntax highlighting
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1                                               "This line enables the true color support.
 
-colorscheme onedark
+colorscheme gruvbox
 
 hi ColorColumn ctermbg=237 guibg=#3c3836
 
@@ -144,7 +141,7 @@ let g:AutoPairsFlyMode = 0                                                      
 let g:AutoPairsShortcutBackInsert = '<M-b>'                                     "To override/remove FlyMode inserted char
 
 let g:airline#extensions#tabline#enabled = 1                                    "Show buffers if only one tab
-let g:airline_theme='onedark'
+let g:airline_theme='gruvbox'
 let g:airline_section_z='%p%% : %{SleuthIndicator()} : %l/%L : %c'
 
 call neomake#configure#automake('w')                                            "Call neomake maker on write
