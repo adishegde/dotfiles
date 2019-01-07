@@ -145,6 +145,7 @@ let g:AutoPairsShortcutBackInsert = '<M-b>'                                     
 
 let g:airline#extensions#tabline#enabled = 1                                    "Show buffers if only one tab
 let g:airline_theme='onedark'
+let g:airline_section_z='%p%% : %{SleuthIndicator()} : %l/%L : %c'
 
 call neomake#configure#automake('w')                                            "Call neomake maker on write
 "let g:neomake_open_list = 2                                                     "Open location list automatically
@@ -240,17 +241,17 @@ set sidescroll=5
 
 augroup vimrc
     autocmd!
+
+    autocmd vimrc FocusGained,BufEnter * checktime                                  "Refresh file when vim gets focus
+    autocmd vimrc BufWritePre * :call StripTrailingWhitespaces()                    "Auto-remove trailing spaces
+
+    autocmd Filetype json let g:indentLine_enabled = 0                              "Indent lines hides quotes in json
+
+    autocmd FileType tex setlocal spell spelllang=en_gb                             "Spell checking in tex files
+    autocmd FileType tex syntax spell toplevel                                      "Spell checking in tex files
+
+    autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 augroup END
-
-autocmd vimrc FocusGained,BufEnter * checktime                                  "Refresh file when vim gets focus
-autocmd vimrc BufWritePre * :call StripTrailingWhitespaces()                    "Auto-remove trailing spaces
-
-autocmd Filetype json let g:indentLine_enabled = 0                              "Indent lines hides quotes in json
-
-autocmd FileType tex setlocal spell spelllang=en_gb                             "Spell checking in tex files
-autocmd FileType tex syntax spell toplevel                                      "Spell checking in tex files
-
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " ================ Functions ========================
 
