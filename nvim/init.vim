@@ -5,7 +5,6 @@ Plug 'sheerun/vim-polyglot'                                                     
 
 Plug 'morhetz/gruvbox'                                                          "Color scheme
 Plug 'joshdick/onedark.vim'
-Plug 'iCyMind/NeoSolarized'
 
 " See mappings
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }               "Searching interface
@@ -80,6 +79,8 @@ Plug 'vim-pandoc/vim-pandoc'                                                    
 Plug 'vim-pandoc/vim-pandoc-syntax'
 
 Plug 'ryanoasis/vim-devicons'                                                   "Icons for plugins
+
+Plug 'rbgrouleff/bclose.vim'
 
 call plug#end()
 
@@ -266,6 +267,9 @@ endfunction
 call arpeggio#map('ixoc', '', 0, 'jk', '<Esc>')
 
 map <leader>rr :RangerEdit<cr>
+map <leader>ra :RangerAppend<cr>
+map <leader>rc :set operatorfunc=RangerChangeOperator<cr>g@
+map <leader>rd :RangerCD<cr>
 
 nmap <leader>t :TagbarToggle<cr>
 
