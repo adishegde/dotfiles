@@ -41,7 +41,6 @@ ZSH_AUTOSUGGEST_USE_ASYNC="true"
 # Easy access to config
 alias zshconfig="$EDITOR ~/.zshrc"
 alias vimconfig="$EDITOR ~/.config/nvim/init.vim"
-alias zpreztoconfig="$EDITOR ~/.zpreztorc"
 
 alias emterm="emacsclient -t"
 alias v="nvim"
