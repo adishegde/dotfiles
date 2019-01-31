@@ -82,6 +82,9 @@ Plug 'ryanoasis/vim-devicons'                                                   
 
 Plug 'rbgrouleff/bclose.vim'
 
+Plug 'junegunn/goyo.vim'                                                        "Distraction free writing
+Plug 'junegunn/limelight.vim'
+
 call plug#end()
 
 " ================ General Config ====================
@@ -188,9 +191,8 @@ let g:UltiSnipsSnippetDirectories = [expand("$HOME/.local/share/nvim/UltiSnips")
 let g:tex_flavor = 'latex'
 let g:pandoc#syntax#conceal#use = 0
 
-let g:neotex_latexdiff = 1
 let g:neotex_pdflatex_alternative = 'xelatex'
-let g:neotex_subfile = 1
+let g:neotex_subfile = 2
 
 let g:prettier#config#print_width = 80
 let g:prettier#config#tab_width = 4
@@ -249,6 +251,9 @@ augroup vimrc
     autocmd FileType tex syntax spell toplevel                                      "Spell checking in tex files
 
     autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+    autocmd! User GoyoEnter :Limelight0.85
+    autocmd! User GoyoLeave :Limelight!
 augroup END
 
 " ================ Functions ========================
