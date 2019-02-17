@@ -79,3 +79,5 @@ export CLICOLOR_FORCE=1
 
 # Load z program
 . `brew --prefix`/etc/profile.d/z.sh
+
+eval "$(pyenv init -)"
