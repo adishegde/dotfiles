@@ -191,7 +191,6 @@ let g:UltiSnipsSnippetDirectories = [expand("$HOME/.local/share/nvim/UltiSnips")
 let g:tex_flavor = 'latex'
 let g:pandoc#syntax#conceal#use = 0
 
-let g:neotex_pdflatex_alternative = 'xelatex'
 let g:neotex_subfile = 2
 
 let g:prettier#config#print_width = 80
@@ -242,18 +241,21 @@ set sidescroll=5
 augroup vimrc
     autocmd!
 
-    autocmd vimrc FocusGained,BufEnter * checktime                                  "Refresh file when vim gets focus
-    autocmd vimrc BufWritePre * :call StripTrailingWhitespaces()                    "Auto-remove trailing spaces
+    autocmd FocusGained,BufEnter * checktime                                    "Refresh file when vim gets focus
+    autocmd BufWritePre * :call StripTrailingWhitespaces()                      "Auto-remove trailing spaces
 
-    autocmd Filetype json let g:indentLine_enabled = 0                              "Indent lines hides quotes in json
+    autocmd Filetype json let g:indentLine_enabled = 0                          "Indent lines hides quotes in json
 
-    autocmd FileType tex setlocal spell spelllang=en_gb                             "Spell checking in tex files
-    autocmd FileType tex syntax spell toplevel                                      "Spell checking in tex files
+    autocmd FileType tex setlocal spell spelllang=en_gb                         "Spell checking in tex files
+    autocmd FileType tex syntax spell toplevel                                  "Spell checking in tex files
 
     autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
-    autocmd! User GoyoEnter :Limelight0.85
-    autocmd! User GoyoLeave :Limelight!
+    autocmd User GoyoEnter :Limelight0.85
+    autocmd User GoyoEnter :call WrappedMovement()
+
+    autocmd User GoyoLeave :Limelight!
+    autocmd User GoyoLeave :call NormalMovement()
 augroup END
 
 " ================ Functions ========================
@@ -265,6 +267,24 @@ function! StripTrailingWhitespaces()
     %s/\s\+$//e
     call cursor(l:l, l:c)
   endif
+endfunction
+
+function! NormalMovement()                                                      "Function to map movement keys to normal behavior
+  silent! nunmap <buffer> k
+  silent! nunmap <buffer> j
+  silent! nunmap <buffer> 0
+  silent! nunmap <buffer> $
+  silent! nunmap <buffer> L
+  silent! nunmap <buffer> H
+endfunction
+
+function! WrappedMovement()                                                     "Modify movement to display line rather than text line
+  noremap  <buffer> <silent> k   gk
+  noremap  <buffer> <silent> j gj
+  noremap  <buffer> <silent> 0 g0
+  noremap  <buffer> <silent> $  g$
+  noremap  <buffer> <silent> H  g0
+  noremap  <buffer> <silent> L  g$
 endfunction
 
 " ================ Mappings ========================
