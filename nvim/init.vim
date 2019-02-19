@@ -1,4 +1,4 @@
-"================ Persistent Undo ==================
+" Plugins {{{
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'sheerun/vim-polyglot'                                                     "Language packs
@@ -86,8 +86,9 @@ Plug 'junegunn/goyo.vim'                                                        
 Plug 'junegunn/limelight.vim'
 
 call plug#end()
+" END Plugins }}}
 
-" ================ General Config ====================
+" General Config {{{
 filetype plugin indent on                                                       "Enable plugins and indents by filetype
 
 let g:mapleader =  " "                                                          "Change leader to a space
@@ -207,14 +208,11 @@ let g:prettier#config#prose_wrap = 'preserve'
 
 set updatetime=100                                                              "To make vim-gutter update faster
 
-" ================ Persistent Undo ==================
-
 silent !mkdir ~/.local/share/nvim/undos > /dev/null 2>&1                        "Keep undo history across sessions, by storing in file.
 set undodir=~/.local/share/nvim/undos
 set undofile
 
-" ================ Completion =======================
-
+" Completion
 set wildmode=list:full
 set wildignore=*.o,*.obj,*~                                                     "stuff to ignore when tab completing
 set wildignore+=*.git*
@@ -230,13 +228,14 @@ set wildignore+=log/**
 set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif
 
-" ================ Scrolling ========================
-
+" Scrolling
 set scrolloff=8                                                                 "Start scrolling when we're 8 lines away from margins
 set sidescrolloff=15
 set sidescroll=5
 
-" ================ Auto commands ======================
+" END General Config }}}
+
+" Auto commands {{{
 
 augroup vimrc
     autocmd!
@@ -249,7 +248,11 @@ augroup vimrc
     autocmd FileType tex setlocal spell spelllang=en_gb                         "Spell checking in tex files
     autocmd FileType tex syntax spell toplevel                                  "Spell checking in tex files
 
-    autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+    autocmd FileType vim setlocal foldmethod=marker                             "Set foldmethod to marker for vim (mainly used for init.vim)
+    "Close all folds on opening a vim file
+    autocmd BufReadPost *.vim :normal zm
+
+    autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
 
     autocmd User GoyoEnter :Limelight0.85
     autocmd User GoyoEnter :call WrappedMovement()
@@ -258,7 +261,9 @@ augroup vimrc
     autocmd User GoyoLeave :call NormalMovement()
 augroup END
 
-" ================ Functions ========================
+" END Auto commands }}}
+
+" Functions {{{
 
 function! StripTrailingWhitespaces()
   if &modifiable
@@ -302,12 +307,16 @@ command! TimeStamp :call InsertTimeStamp()
 
 call arpeggio#map('ixoc', '', 0, 'jk', '<Esc>')
 
-map <leader>rr :RangerEdit<cr>
-map <leader>ra :RangerAppend<cr>
-map <leader>rc :set operatorfunc=RangerChangeOperator<cr>g@
-map <leader>rd :RangerCD<cr>
+" Remap L and H to go to beginning and end of line
+nnoremap L $
+nnoremap H 0
 
-nmap <leader>t :TagbarToggle<cr>
+nnoremap <leader>rr :RangerEdit<cr>
+nnoremap <leader>ra :RangerAppend<cr>
+nnoremap <leader>rc :set operatorfunc=RangerChangeOperator<cr>g@
+nnoremap <leader>rd :RangerCD<cr>
+
+nnoremap <leader>t :TagbarToggle<cr>
 
 nnoremap <leader>wj <C-W><C-J>
 nnoremap <leader>wk <C-W><C-K>
@@ -325,12 +334,12 @@ nnoremap <silent> <Leader>bd :bd<CR>
 nnoremap <silent> <Leader>bn :enew<CR>
 
 " Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+nnoremap <silent> gd <Plug>(coc-definition)
+nnoremap <silent> gy <Plug>(coc-type-definition)
+nnoremap <silent> gi <Plug>(coc-implementation)
+nnoremap <silent> gr <Plug>(coc-references)
 
-nmap <leader>rn <Plug>(coc-rename)
+nnoremap <leader>rn <Plug>(coc-rename)
 
 " Use K for show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -350,3 +359,5 @@ inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 " Coc only does snippet and additional edit on confirm. Force select before
 " confirm
  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+ " END Mappings }}}
