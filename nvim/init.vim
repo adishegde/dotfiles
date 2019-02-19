@@ -287,7 +287,18 @@ function! WrappedMovement()                                                     
   noremap  <buffer> <silent> L  g$
 endfunction
 
-" ================ Mappings ========================
+function! InsertTimeStamp()                                                     "Function to insert time stamp
+  execute ":normal iWritten on: " . strftime("\%Y-\%m-\%d \%H:\%M:\%S")
+  call NERDComment(1, 'sexy')
+endfunction
+
+" END Functions }}}
+
+" Commands {{{
+command! TimeStamp :call InsertTimeStamp()
+" END Commands }}}
+
+" Mappings {{{
 
 call arpeggio#map('ixoc', '', 0, 'jk', '<Esc>')
 
