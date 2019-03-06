@@ -14,6 +14,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'rafaqz/ranger.vim'                                                        "File Browser
 
 Plug 'neoclide/coc.nvim', {'do': 'yarn install'}                                "Autocompletion
+Plug 'Shougo/echodoc.vim'                                                       "Show function signatures
 
 " See mappings
 Plug 'scrooloose/nerdcommenter'                                                 "Commenting text fast
@@ -127,6 +128,7 @@ set colorcolumn=80
 set t_Co=256
 set cmdheight=2                                                                 "Better display for messages
 set signcolumn=yes
+set shortmess+=c
 
 syntax on                                                                       "turn on syntax highlighting
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1                                               "This line enables the true color support.
@@ -207,6 +209,8 @@ let g:prettier#config#parser = 'babylon'
 let g:prettier#config#prose_wrap = 'preserve'
 
 set updatetime=100                                                              "To make vim-gutter update faster
+
+let g:echodoc#enable_at_startup = 1
 
 silent !mkdir ~/.local/share/nvim/undos > /dev/null 2>&1                        "Keep undo history across sessions, by storing in file.
 set undodir=~/.local/share/nvim/undos
