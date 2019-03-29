@@ -42,21 +42,6 @@ Plug 'haya14busa/is.vim'                                                        
 
 Plug 'ludovicchabant/vim-gutentags'                                             "Tag file generation automated
 
-" post install (yarn install | npm install) then load plugin only for editing supported files
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'npm install',
-  \ 'for': [
-      \ 'javascript',
-      \ 'typescript',
-      \ 'css',
-      \ 'less',
-      \ 'scss',
-      \ 'json',
-      \ 'graphql',
-      \ 'markdown',
-      \ 'vue'
-  \ ] }
-
 Plug 'kana/vim-arpeggio'                                                        "Define simultaneous mappings with custom delays
 Plug 'tpope/vim-sleuth'                                                         "Detect and set indentation related variables
 
@@ -85,6 +70,8 @@ Plug 'rbgrouleff/bclose.vim'
 
 Plug 'junegunn/goyo.vim'                                                        "Distraction free writing
 Plug 'junegunn/limelight.vim'
+
+Plug 'sbdchd/neoformat'                                                         "Formatting code
 
 call plug#end()
 " END Plugins }}}
@@ -196,18 +183,6 @@ let g:pandoc#syntax#conceal#use = 0
 
 let g:neotex_subfile = 2
 
-let g:prettier#config#print_width = 80
-let g:prettier#config#tab_width = 4
-let g:prettier#config#use_tabs = 'false'
-let g:prettier#config#semi = 'true'
-let g:prettier#config#single_quote = 'false'
-let g:prettier#config#bracket_spacing = 'true'
-let g:prettier#config#jsx_bracket_same_line = 'false'
-let g:prettier#config#arrow_parens = 'avoid'
-let g:prettier#config#trailing_comma = 'none'
-let g:prettier#config#parser = 'babylon'
-let g:prettier#config#prose_wrap = 'preserve'
-
 set updatetime=100                                                              "To make vim-gutter update faster
 
 let g:echodoc#enable_at_startup = 1
@@ -236,6 +211,16 @@ set wildignore+=*.png,*.jpg,*.gif
 set scrolloff=8                                                                 "Start scrolling when we're 8 lines away from margins
 set sidescrolloff=15
 set sidescroll=5
+
+let g:neoformat_enabled_javascript = ['prettier']
+let g:neoformat_enabled_typescript = ['prettier']
+let g:neoformat_enabled_css = ['prettier']
+let g:neoformat_enabled_less = ['prettier']
+let g:neoformat_enabled_scss = ['prettier']
+let g:neoformat_enabled_json = ['prettier']
+let g:neoformat_enabled_graphql = ['prettier']
+let g:neoformat_enabled_markdown = ['prettier']
+let g:neoformat_enabled_vue = ['prettier']
 
 " END General Config }}}
 
@@ -305,6 +290,7 @@ endfunction
 
 " Commands {{{
 command! TimeStamp :call InsertTimeStamp()
+command! Vimconfig :e ~/.config/nvim/init.vim
 " END Commands }}}
 
 " Mappings {{{
@@ -344,6 +330,9 @@ nnoremap <silent> gi <Plug>(coc-implementation)
 nnoremap <silent> gr <Plug>(coc-references)
 
 nnoremap <leader>rn <Plug>(coc-rename)
+
+vnoremap <leader>f  :Neoformat<CR>
+nnoremap <leader>f  :Neoformat<CR>
 
 " Use K for show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
