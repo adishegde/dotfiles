@@ -1,8 +1,6 @@
 " Plugins {{{
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'sheerun/vim-polyglot'                                                     "Language packs
-
 Plug 'morhetz/gruvbox'                                                          "Color scheme
 Plug 'joshdick/onedark.vim'
 
@@ -57,9 +55,7 @@ Plug 'airblade/vim-gitgutter'                                                   
 
 Plug 'SirVer/ultisnips'                                                         "Snippet engine neovim
 
-":NeoTex to compile, NeoTexOn to start live updates and NeoTexOff to stop live
-"updates
-Plug 'donRaphaco/neotex', { 'for': 'tex' }                                      "Live latex preview
+Plug 'lervag/vimtex'
 
 Plug 'vim-pandoc/vim-pandoc'                                                    "Pandoc markdown support and syntax highlight
 Plug 'vim-pandoc/vim-pandoc-syntax'
@@ -179,9 +175,11 @@ let g:UltiSnipsSnippetsDir = expand("$HOME/.local/share/nvim/UltiSnips")
 let g:UltiSnipsSnippetDirectories = [expand("$HOME/.local/share/nvim/UltiSnips")]
 
 let g:tex_flavor = 'latex'
+let g:tex_conceal = ''
+let g:vimtex_latexmk_continuous = 1
+let g:vimtex_quickfix_mode = 0
+let g:vimtex_view_method = 'skim'
 let g:pandoc#syntax#conceal#use = 0
-
-let g:neotex_subfile = 2
 
 set updatetime=100                                                              "To make vim-gutter update faster
 
