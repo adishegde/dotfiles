@@ -8,6 +8,10 @@ Plug 'joshdick/onedark.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }               "Searching interface
 Plug 'junegunn/fzf.vim'
 
+Plug 'sheerun/vim-polyglot'
+
+Plug 'vimwiki/vimwiki'
+
 " See mappings
 Plug 'rafaqz/ranger.vim'                                                        "File Browser
 
@@ -24,8 +28,7 @@ Plug 'jiangmiao/auto-pairs'                                                     
 
 Plug 'Yggdroot/indentLine'                                                      "Indent Lines
 
-"See mappings
-Plug 'majutsushi/tagbar'                                                        "Tagbar for easy navigation
+Plug 'liuchengxu/vista.vim'
 
 Plug 'vim-airline/vim-airline'                                                  "Status/tab line
 Plug 'vim-airline/vim-airline-themes'                                           "Themes for other plugins
@@ -38,7 +41,9 @@ Plug 'wellle/targets.vim'                                                       
 
 Plug 'haya14busa/is.vim'                                                        "Improves incremental search
 
-Plug 'ludovicchabant/vim-gutentags'                                             "Tag file generation automated
+" Almost never use tags, mostly LSP. But still a good plugin if tag support is
+" ever needed.
+"Plug 'ludovicchabant/vim-gutentags'
 
 Plug 'kana/vim-arpeggio'                                                        "Define simultaneous mappings with custom delays
 Plug 'tpope/vim-sleuth'                                                         "Detect and set indentation related variables
@@ -57,15 +62,9 @@ Plug 'SirVer/ultisnips'                                                         
 
 Plug 'lervag/vimtex'
 
-Plug 'vim-pandoc/vim-pandoc'                                                    "Pandoc markdown support and syntax highlight
-Plug 'vim-pandoc/vim-pandoc-syntax'
-
 Plug 'ryanoasis/vim-devicons'                                                   "Icons for plugins
 
 Plug 'rbgrouleff/bclose.vim'
-
-Plug 'junegunn/goyo.vim'                                                        "Distraction free writing
-Plug 'junegunn/limelight.vim'
 
 Plug 'sbdchd/neoformat'                                                         "Formatting code
 
@@ -123,6 +122,8 @@ hi ColorColumn ctermbg=237 guibg=#3c3836
 let g:python_host_prog=expand("$HOME/.local/share/nvim/python2/bin/python")     "Path to python interpretters
 let g:python3_host_prog=expand("$HOME/.local/share/nvim/python3/bin/python3")
 
+let g:polyglot_disabled = ['latex']
+
 let g:indentLine_fileTypeExclude = ['json', 'tex']
 
 let g:NERDCompactSexyComs = 1                                                   "Good looking multiline comments
@@ -169,6 +170,7 @@ let g:mta_filetypes = {
     \}
 
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js,*.jsx'
+let g:netrw_browsex_viewer = 'open'
 
 " Ultisnips completion through Ctrl+j
 let g:UltiSnipsSnippetsDir = expand("$HOME/.local/share/nvim/UltiSnips")
@@ -179,7 +181,6 @@ let g:tex_conceal = ''
 let g:vimtex_latexmk_continuous = 1
 let g:vimtex_quickfix_mode = 0
 let g:vimtex_view_method = 'skim'
-let g:pandoc#syntax#conceal#use = 0
 
 set updatetime=100                                                              "To make vim-gutter update faster
 
@@ -188,6 +189,8 @@ let g:echodoc#enable_at_startup = 1
 silent !mkdir ~/.local/share/nvim/undos > /dev/null 2>&1                        "Keep undo history across sessions, by storing in file.
 set undodir=~/.local/share/nvim/undos
 set undofile
+
+let g:vimtex_fold_enabled = 1
 
 " Completion
 set wildmode=list:full
@@ -241,11 +244,7 @@ augroup vimrc
 
     autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
 
-    autocmd User GoyoEnter :Limelight0.85
-    autocmd User GoyoEnter :call WrappedMovement()
-
-    autocmd User GoyoLeave :Limelight!
-    autocmd User GoyoLeave :call NormalMovement()
+    autocmd FileType ocaml :set foldmethod=indent                               "Set foldmethod to indent when support not available
 augroup END
 
 " END Auto commands }}}
@@ -259,24 +258,6 @@ function! StripTrailingWhitespaces()
     %s/\s\+$//e
     call cursor(l:l, l:c)
   endif
-endfunction
-
-function! NormalMovement()                                                      "Function to map movement keys to normal behavior
-  silent! nunmap <buffer> k
-  silent! nunmap <buffer> j
-  silent! nunmap <buffer> 0
-  silent! nunmap <buffer> $
-  silent! nunmap <buffer> L
-  silent! nunmap <buffer> H
-endfunction
-
-function! WrappedMovement()                                                     "Modify movement to display line rather than text line
-  noremap  <buffer> <silent> k   gk
-  noremap  <buffer> <silent> j gj
-  noremap  <buffer> <silent> 0 g0
-  noremap  <buffer> <silent> $  g$
-  noremap  <buffer> <silent> H  g0
-  noremap  <buffer> <silent> L  g$
 endfunction
 
 function! InsertTimeStamp()                                                     "Function to insert time stamp
@@ -304,7 +285,7 @@ nnoremap <leader>ra :RangerAppend<cr>
 nnoremap <leader>rc :set operatorfunc=RangerChangeOperator<cr>g@
 nnoremap <leader>rd :RangerCD<cr>
 
-nnoremap <leader>t :TagbarToggle<cr>
+nnoremap <leader>t :Vista coc<cr>
 
 nnoremap <leader>wj <C-W><C-J>
 nnoremap <leader>wk <C-W><C-K>
@@ -312,11 +293,10 @@ nnoremap <leader>wl <C-W><C-L>
 nnoremap <leader>wh <C-W><C-H>
 
 nnoremap <silent> <Leader>pf :Files<CR>
-nnoremap <silent> <Leader>pt :Tags<CR>
+nnoremap <silent> <Leader>pt :Vista finder coc<CR>
 nnoremap <leader>ps :Ag<Space>
 
 nnoremap <silent> <Leader>bb :Buffers<CR>
-nnoremap <silent> <Leader>bt :BTags<CR>
 nnoremap <silent> <Leader>bc :BCommits<CR>
 nnoremap <silent> <Leader>bd :bd<CR>
 nnoremap <silent> <Leader>bn :enew<CR>
