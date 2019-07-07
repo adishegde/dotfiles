@@ -71,6 +71,7 @@ alias gp='git push'
 alias l="ls -a"
 
 alias g14="clang++ -std=c++14"
+alias gntl="g++ -g -O2 -std=c++11 -pthread -march=native -lntl -lgmp -lm -lcrypto"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -78,6 +79,10 @@ alias g14="clang++ -std=c++14"
 unset LSCOLORS
 export CLICOLOR=1
 export CLICOLOR_FORCE=1
+
+export LDFLAGS="-L/usr/local/opt/openssl/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl/include"
+export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
 
 # Load z program
 . `brew --prefix`/etc/profile.d/z.sh
