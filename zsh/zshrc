@@ -28,7 +28,7 @@ export SPACESHIP_PROMPT_ORDER=(
   host          # Hostname section
   git           # Git section (git_branch + git_status)
   docker        # Docker section
-  venv          # virtualenv section
+  conda         # virtualenv section
   exec_time     # Execution time
   line_sep      # Line break
   vi_mode       # Vi-mode indicator

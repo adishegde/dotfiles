@@ -141,7 +141,6 @@ zstyle ':prezto:module:prompt' theme 'spaceship'
 # Automatically initialize virtualenvwrapper if pre-requisites are met.
 # zstyle ':prezto:module:python:virtualenv' initialize 'yes'
 zstyle ':prezto:module:python' skip-virtualenvwrapper-init 'on'
-zstyle ':prezto:module:python' conda-init 'on'
 
 #
 # Screen
