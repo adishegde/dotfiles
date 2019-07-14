@@ -7,8 +7,8 @@ This is the customary dotfile repo maintained by anyone who's wasted a
 I wasn't in the habit of mentioning the sources at the time and so I apologize
 if content has been copied without due credit.
 
-Also everything might not work out of the box. All the configurations are
-for MacOS with an iTerm2 but should work in most Linux OS.
+Also, everything might not work out of the box. The configurations are for a
+MacOS with an iTerm2 but should work well on most Linux OS.
 
 ## Tmux
 
