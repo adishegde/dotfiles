@@ -37,8 +37,8 @@ nnoremap <silent> gr <Plug>(coc-references)
 nnoremap <leader>rn <Plug>(coc-rename)
 
 " formatting
-vnoremap <leader>f  :Neoformat<CR>
-nnoremap <leader>f  :Neoformat<CR>
+vnoremap <leader>f :Neoformat<CR>
+nnoremap <leader>f :Neoformat<CR>
 
 " use K for show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -57,4 +57,4 @@ inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 " Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm. Force select before
 " confirm
- inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
