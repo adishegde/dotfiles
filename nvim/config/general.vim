@@ -1,39 +1,89 @@
-filetype plugin indent on                                                       "Enable plugins and indents by filetype
+"Enable plugins and indents by filetype
+filetype plugin indent on
 
-let g:mapleader =  " "                                                          "Change leader to a space
+"Change leader to a space
+let g:mapleader =  " "
 
-set exrc                                                                        "Local vimrc files allowed
-set secure                                                                      "Disable auto, shell and write commands from being run in .nvimrc
+"Local vimrc files allowed
+set exrc
+
+"Disable auto, shell and write commands from being run in .nvimrc
+set secure
+
 set termguicolors
-set title                                                                       "change the terminal's title
-set number                                                                      "Line numbers are good
-set relativenumber                                                              "Show numbers relative to current line
-set showcmd                                                                     "Show incomplete cmds down the bottom
-set gdefault                                                                    "Set global flag for search and replace
-set gcr=a:blinkon500-blinkwait500-blinkoff500                                   "Set cursor blinking rate
-set smartcase                                                                   "Smart case search if there is uppercase
-set ignorecase                                                                  "case insensitive search
-set showmatch                                                                   "Highlight matching bracket
-set nostartofline                                                               "Jump to first non-blank character
-set timeoutlen=1000 ttimeoutlen=0                                               "Reduce Command timeout for faster escape and O
-set fileencoding=utf-8                                                          "Set utf-8 encoding on write
-set wrap                                                                        "Enable word wrap
-set linebreak                                                                   "Wrap lines at convenient points
-set listchars=tab:\ \ ,trail:·                                                  "Set trails for tabs and spaces
-set list                                                                        "Enable listchars
-set lazyredraw                                                                  "Do not redraw on registers and macros
-set background=dark                                                             "Set background to dark
-set hidden                                                                      "Hide buffers in background
-set splitright                                                                  "Set up new vertical splits positions
-set splitbelow                                                                  "Set up new horizontal splits positions
-set inccommand=split                                                            "Show substitute changes immidiately in separate split
-set fillchars+=vert:\│                                                          "Make vertical split separator full line
-set pumheight=30                                                                "Maximum number of entries in autocomplete popup
-set foldmethod=syntax                                                           "Set syntax based folding
+
+"Change the terminal's title
+set title
+
+set number
+set relativenumber
+
+"Show incomplete cmds down the bottom
+set showcmd
+
+"Set global flag for search and replace
+set gdefault
+
+"Set cursor blinking rate
+set gcr=a:blinkon500-blinkwait500-blinkoff500
+
+"Smart case search if there is uppercase
+set smartcase
+"case insensitive search
+set ignorecase
+
+"Highlight matching bracket
+set showmatch
+
+"Jump to first non-blank character
+set nostartofline
+
+"Reduce Command timeout for faster escape and O
+set timeoutlen=1000 ttimeoutlen=0
+
+"Set utf-8 encoding on write
+set fileencoding=utf-8
+
+"Enable word wrap
+set wrap
+"Wrap lines at convenient points
+set linebreak
+
+"Set trails for tabs and spaces
+set listchars=tab:\ \ ,trail:·
+
+"Enable listchars
+set list
+
+"Do not redraw on registers and macros
+set lazyredraw
+
+"Set background to dark
+set background=dark
+
+"Hide buffers in background
+set hidden
+
+"Set up new vertical splits positions
+set splitright
+"Set up new horizontal splits positions
+set splitbelow
+
+"Show substitute changes immidiately in separate split
+set inccommand=split
+
+"Make vertical split separator full line
+set fillchars+=vert:\│
+
+"Maximum number of entries in autocomplete popup
+set pumheight=30
+
+"Set syntax based folding
+set foldmethod=syntax
+
 set nofoldenable
 set colorcolumn=80
 set t_Co=256
-set cmdheight=2                                                                 "Better display for messages
 set signcolumn=yes
 set shortmess+=c
 set encoding=utf8
@@ -41,17 +91,32 @@ set guifont=<FONT_NAME>:h<FONT_SIZE>
 set guifont=DroidSansMono_Nerd_Font:h11
 set updatetime=100
 
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1                                               "This line enables the true color support.
-let g:onedark_terminal_italics = 1                                              "Enable italic font
+"Better display for messages
+set cmdheight=2
+
+"Some LSP servers don't work well with backups
+set nobackup
+set nowritebackup
+
+"This line enables the true color support.
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
+"Enable italic font
+let g:onedark_terminal_italics = 1
 let g:onedark_termcolors=16
-let g:python_host_prog=expand("$HOME/.local/share/nvim/python2/bin/python")     "Path to python interpretters
+
+"Path to python interpretters
+let g:python_host_prog=expand("$HOME/.local/share/nvim/python2/bin/python")
 let g:python3_host_prog=expand("$HOME/.local/share/nvim/python3/bin/python3")
 
-syntax on                                                                       "Turn on syntax highlighting
+
+"Turn on syntax highlighting
+syntax on
 colorscheme gruvbox
 hi ColorColumn ctermbg=237 guibg=#3c3836
 
-silent !mkdir ~/.local/share/nvim/undos > /dev/null 2>&1                        "Keep undo history across sessions, by storing in file.
+"Keep undo history across sessions, by storing in file.
+silent !mkdir ~/.local/share/nvim/undos > /dev/null 2>&1
 set undodir=~/.local/share/nvim/undos
 set undofile
 

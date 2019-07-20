@@ -38,7 +38,9 @@ function! StripTrailingWhitespaces()
   endif
 endfunction
 
-function! InsertTimeStamp()                                                     "Function to insert time stamp
+
+"Function to insert time stamp
+function! InsertTimeStamp()
   execute ":normal iWritten on: " . strftime("\%Y-\%m-\%d \%H:\%M:\%S")
   call NERDComment(1, 'sexy')
 endfunction
