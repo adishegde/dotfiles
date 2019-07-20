@@ -26,7 +26,6 @@ Plug 'scrooloose/nerdcommenter'
 
 " async make and linting
 Plug 'neomake/neomake'
-
 " using local eslint with neomake
 Plug 'benjie/neomake-local-eslint.vim'
 
@@ -81,8 +80,8 @@ Plug 'ryanoasis/vim-devicons'
 " sane buffer close logic
 Plug 'rbgrouleff/bclose.vim'
 
-" automatic code formatting
-Plug 'sbdchd/neoformat'
+" smooth tmux and vim split movement
+Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
 " END Plugin Installations }}}
@@ -149,20 +148,4 @@ let g:vimtex_view_method = 'skim'
 let g:vimtex_fold_enabled = 1
 
 let g:echodoc#enable_at_startup = 1
-
-let g:neoformat_enabled_javascript = ['prettier']
-let g:neoformat_enabled_typescript = ['prettier']
-let g:neoformat_enabled_css = ['prettier']
-let g:neoformat_enabled_less = ['prettier']
-let g:neoformat_enabled_scss = ['prettier']
-let g:neoformat_enabled_json = ['prettier']
-let g:neoformat_enabled_graphql = ['prettier']
-let g:neoformat_enabled_markdown = ['prettier']
-let g:neoformat_enabled_vue = ['prettier']
-let g:neoformat_tex_latexindentcustom = {
-      \'exe': 'latexindent',
-      \'args': ['-g /dev/stderr']
-      \}
-let g:neoformat_enabled_tex = ['neoformat_tex_latexindentcustom']
-
 " END Plugin Configurations }}}

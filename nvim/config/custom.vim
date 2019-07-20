@@ -1,30 +1,28 @@
 " Autocommands {{{
 augroup vimrc
-    autocmd!
+  autocmd!
 
-    "Refresh file when vim gets focus
-    autocmd FocusGained,BufEnter * checktime
+  "Refresh file when vim gets focus
+  autocmd FocusGained,BufEnter * checktime
 
-    "Auto-remove trailing spaces
-    autocmd BufWritePre * :call StripTrailingWhitespaces()
+  "Auto-remove trailing spaces for all filetypes except markdown
+  autocmd BufWritePre * if &filetype !~? 'markdown' | :call StripTrailingWhitespaces() | endif
 
-    "Indent lines hides quotes in json
-    autocmd Filetype json let g:indentLine_enabled = 0
+  "Indent lines hides quotes in json
+  autocmd Filetype json let g:indentLine_enabled = 0
 
-    "Spell checking in tex files
-    autocmd FileType tex setlocal spell spelllang=en_gb
-    autocmd FileType tex syntax spell toplevel
+  "Spell checking in tex files
+  autocmd FileType tex setlocal spell spelllang=en_gb
+  autocmd FileType tex syntax spell toplevel
 
-    "Use foldmethod marker in vimscript files
-    autocmd FileType vim setlocal foldmethod=marker
+  "Use foldmethod marker in vimscript files
+  autocmd FileType vim setlocal foldmethod=marker
 
-    autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
+  "Show markdown files as is, without hiding characters
+  autocmd FileType markdown :set conceallevel=0
 
-    "Set foldmethod to indent when support not available
-    autocmd FileType ocaml :set foldmethod=indent
-
-    "Show markdown files as is, without hiding characters
-    autocmd FileType markdown :set conceallevel=0
+  " Show signature help on moving to next placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup END
 " END Autocommands }}}
 
@@ -38,15 +36,16 @@ function! StripTrailingWhitespaces()
   endif
 endfunction
 
-
 "Function to insert time stamp
 function! InsertTimeStamp()
   execute ":normal iWritten on: " . strftime("\%Y-\%m-\%d \%H:\%M:\%S")
   call NERDComment(1, 'sexy')
 endfunction
+
 " END Functions }}}
 
 " Commands {{{
 command! TimeStamp :call InsertTimeStamp()
 command! Vimconfig :e ~/.config/nvim/init.vim
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
 " END Commands }}}
