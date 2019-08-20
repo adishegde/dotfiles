@@ -38,7 +38,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-Plug 'tpope/vim-surround'
+Plug 'machakann/vim-sandwich'
 
 " helpful text objects like arguements etc
 Plug 'wellle/targets.vim'
@@ -148,4 +148,6 @@ let g:vimtex_view_method = 'skim'
 let g:vimtex_fold_enabled = 1
 
 let g:echodoc#enable_at_startup = 1
+
+let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 " END Plugin Configurations }}}
