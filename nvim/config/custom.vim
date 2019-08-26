@@ -11,10 +11,6 @@ augroup vimrc
   "Indent lines hides quotes in json
   autocmd Filetype json let g:indentLine_enabled = 0
 
-  "Spell checking in tex files
-  autocmd FileType tex setlocal spell spelllang=en_gb
-  autocmd FileType tex syntax spell toplevel
-
   "Use foldmethod marker in vimscript files
   autocmd FileType vim setlocal foldmethod=marker
 

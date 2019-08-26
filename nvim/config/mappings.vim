@@ -32,8 +32,7 @@ nmap <silent> gr <Plug>(coc-references)
 nmap <leader>rn <Plug>(coc-rename)
 
 " formatting
-xmap <leader>f <Plug>(coc-format-selected)
-nmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(ale_fix)
 
 " codeaction
 xmap <leader>a <Plug>(coc-codeaction-selected)

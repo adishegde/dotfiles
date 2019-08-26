@@ -24,10 +24,8 @@ Plug 'Shougo/echodoc.vim'
 " easy commenting
 Plug 'scrooloose/nerdcommenter'
 
-" async make and linting
-Plug 'neomake/neomake'
-" using local eslint with neomake
-Plug 'benjie/neomake-local-eslint.vim'
+" async linting
+Plug 'dense-analysis/ale'
 
 " support for brackets, quotes etc
 Plug 'jiangmiao/auto-pairs'
@@ -56,12 +54,6 @@ Plug 'kana/vim-arpeggio'
 " automatically set indentation related settings
 Plug 'tpope/vim-sleuth'
 
-" close html tags automatically
-Plug 'alvan/vim-closetag'
-
-" wakatime integration
-Plug 'wakatime/vim-wakatime'
-
 " command to rename files correctly
 Plug 'danro/rename.vim'
 
@@ -70,9 +62,6 @@ Plug 'airblade/vim-gitgutter'
 
 " snippet support
 Plug 'SirVer/ultisnips'
-
-" extensive latex support
-Plug 'lervag/vimtex'
 
 " icons
 Plug 'ryanoasis/vim-devicons'
@@ -105,11 +94,6 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='gruvbox'
 let g:airline_section_z='%p%% : %{SleuthIndicator()} : %l/%L : %c'
 
-"Call neomake maker on write
-call neomake#configure#automake('w')
-let g:neomake_javascript_enabled_makers = ['eslint']
-let g:neomake_tex_enabled_makers = ['lacheck']
-
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
@@ -139,15 +123,22 @@ let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js,*.jsx'
 
 let g:UltiSnipsSnippetsDir = expand("$HOME/.local/share/nvim/UltiSnips")
 let g:UltiSnipsSnippetDirectories = [expand("$HOME/.local/share/nvim/UltiSnips")]
+let g:UltiSnipsJumpForwardTrigger = "<c-d>"
+let g:UltiSnipsJumpBackwardTrigger = "<c-u>"
 
 let g:tex_flavor = 'latex'
 let g:tex_conceal = ''
-let g:vimtex_latexmk_continuous = 1
-let g:vimtex_quickfix_mode = 0
-let g:vimtex_view_method = 'skim'
-let g:vimtex_fold_enabled = 1
 
 let g:echodoc#enable_at_startup = 1
 
 let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
+
+" Use only coc.nvim for LSP support
+let g:ale_disable_lsp = 1
+let g:ale_linters = {
+      \ 'tex': ['lacheck', 'texlab', 'writegood']
+      \}
+let g:ale_fixers = {
+      \ 'tex': ['latexindent']
+      \}
 " END Plugin Configurations }}}
