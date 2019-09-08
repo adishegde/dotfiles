@@ -136,9 +136,10 @@ let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 " Use only coc.nvim for LSP support
 let g:ale_disable_lsp = 1
 let g:ale_linters = {
-      \ 'tex': ['lacheck', 'texlab', 'writegood']
+      \ 'tex': ['lacheck', 'texlab', 'proselint']
       \}
 let g:ale_fixers = {
-      \ 'tex': ['latexindent']
+      \ 'tex': ['latexindent'],
+      \ 'markdown': ['prettier']
       \}
 " END Plugin Configurations }}}
