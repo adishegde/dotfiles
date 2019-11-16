@@ -31,12 +31,18 @@ nmap <silent> gr <Plug>(coc-references)
 
 nmap <leader>rn <Plug>(coc-rename)
 
-" formatting
-nmap <leader>f <Plug>(ale_fix)
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-" codeaction
-xmap <leader>a <Plug>(coc-codeaction-selected)
-nmap <leader>a <Plug>(coc-codeaction-selected)
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
+
+" mappings for tags
+nmap <leader>tt :Vista coc<CR>
+nmap <leader>tf :Vista finder coc<CR>
 
 " use K for show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>

@@ -3,14 +3,10 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 " color scheme
 Plug 'morhetz/gruvbox'
-Plug 'joshdick/onedark.vim'
 
 " generic fuzzy search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-
-" language support
-Plug 'sheerun/vim-polyglot'
 
 " file browser
 Plug 'rafaqz/ranger.vim'
@@ -18,14 +14,8 @@ Plug 'rafaqz/ranger.vim'
 " auto-completion using language servers
 Plug 'neoclide/coc.nvim', {'do': 'yarn install'}
 
-" function signature support for coc
-Plug 'Shougo/echodoc.vim'
-
 " easy commenting
-Plug 'scrooloose/nerdcommenter'
-
-" async linting
-Plug 'dense-analysis/ale'
+Plug 'tyru/caw.vim'
 
 " support for brackets, quotes etc
 Plug 'jiangmiao/auto-pairs'
@@ -43,10 +33,6 @@ Plug 'wellle/targets.vim'
 
 " incremental search
 Plug 'haya14busa/is.vim'
-
-" automatic tagfile generation
-" not that useful due to coc usage
-"Plug 'ludovicchabant/vim-gutentags'
 
 " extensive key-chord support
 Plug 'kana/vim-arpeggio'
@@ -72,6 +58,24 @@ Plug 'rbgrouleff/bclose.vim'
 " smooth tmux and vim split movement
 Plug 'christoomey/vim-tmux-navigator'
 
+" tagbar using LSP
+Plug 'liuchengxu/vista.vim'
+
+" autoformatting
+Plug 'sbdchd/neoformat'
+
+" TOML syntax support
+Plug 'cespare/vim-toml'
+
+" Run commands asynchronously
+Plug 'skywind3000/asyncrun.vim'
+
+" Documentation
+Plug 'kkoomen/vim-doge'
+
+" Smooth repl interaction from vim
+Plug 'rhysd/reply.vim', { 'on': ['Repl', 'ReplAuto'] }
+
 call plug#end()
 " END Plugin Installations }}}
 
@@ -79,7 +83,7 @@ call plug#end()
 
 let g:polyglot_disabled = ['latex']
 
-let g:indentLine_fileTypeExclude = ['json', 'tex']
+let g:indentLine_fileTypeExclude = ['json', 'tex', 'markdown']
 
 "Good looking multiline comments
 let g:NERDCompactSexyComs = 1
@@ -119,8 +123,6 @@ let g:mta_filetypes = {
     \ 'javascript.jsx' : 1,
     \}
 
-let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js,*.jsx'
-
 let g:UltiSnipsSnippetsDir = expand("$HOME/.local/share/nvim/UltiSnips")
 let g:UltiSnipsSnippetDirectories = [expand("$HOME/.local/share/nvim/UltiSnips")]
 let g:UltiSnipsJumpForwardTrigger = "<c-d>"
@@ -129,17 +131,23 @@ let g:UltiSnipsJumpBackwardTrigger = "<c-u>"
 let g:tex_flavor = 'latex'
 let g:tex_conceal = ''
 
-let g:echodoc#enable_at_startup = 1
-
 let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 
+let g:neoformat_run_all_formatters = 1
+let g:neoformat_enabled_python = ['black', 'docformatter']
+let g:neoformat_enabled_markdown = ['prettier']
+let g:neoformat_enabled_cpp = ['uncrustify']
+let g:neoformat_enabled_java = ['uncrustify']
+
 " Use only coc.nvim for LSP support
-let g:ale_disable_lsp = 1
-let g:ale_linters = {
-      \ 'tex': ['lacheck', 'texlab', 'proselint']
-      \}
-let g:ale_fixers = {
-      \ 'tex': ['latexindent'],
-      \ 'markdown': ['prettier']
-      \}
-" END Plugin Configurations }}}
+let g:vista_default_executive = 'coc'
+let g:vista_executive_for = {
+    \ 'markdown': 'toc',
+    \ }
+
+let g:doge_enable_mappings = 1
+let g:doge_mapping_comment_jump_forward = "<c-d>"
+let g:doge_mapping_comment_jump_backward = "<c-u>"
+
+let g:caw_operator_keymappings = 1
+ "END Plugin Configurations }}}

@@ -24,9 +24,6 @@ set showcmd
 "Set global flag for search and replace
 set gdefault
 
-"Set cursor blinking rate
-set gcr=a:blinkon500-blinkwait500-blinkoff500
-
 "Smart case search if there is uppercase
 set smartcase
 "case insensitive search
@@ -114,6 +111,9 @@ let g:python3_host_prog=expand("$HOME/.local/share/nvim/python3/bin/python3")
 syntax on
 colorscheme gruvbox
 hi ColorColumn ctermbg=237 guibg=#3c3836
+
+" Tex error check are more painful than helpful
+let g:tex_no_error=1
 
 "Keep undo history across sessions, by storing in file.
 silent !mkdir ~/.local/share/nvim/undos > /dev/null 2>&1

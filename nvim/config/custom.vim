@@ -14,11 +14,8 @@ augroup vimrc
   "Use foldmethod marker in vimscript files
   autocmd FileType vim setlocal foldmethod=marker
 
-  "Show markdown files as is, without hiding characters
-  autocmd FileType markdown :set conceallevel=0
-
-  " Show signature help on moving to next placeholder
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+  "Enable spell check in tex files
+  autocmd FileType tex setlocal spell
 augroup END
 " END Autocommands }}}
 
@@ -31,17 +28,9 @@ function! StripTrailingWhitespaces()
     call cursor(l:l, l:c)
   endif
 endfunction
-
-"Function to insert time stamp
-function! InsertTimeStamp()
-  execute ":normal iWritten on: " . strftime("\%Y-\%m-\%d \%H:\%M:\%S")
-  call NERDComment(1, 'sexy')
-endfunction
-
 " END Functions }}}
 
 " Commands {{{
-command! TimeStamp :call InsertTimeStamp()
 command! Vimconfig :e ~/.config/nvim/init.vim
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
+command! Reloadconfig :source ~/.config/nvim/init.vim
 " END Commands }}}
