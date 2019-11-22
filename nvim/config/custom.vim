@@ -28,9 +28,15 @@ function! StripTrailingWhitespaces()
     call cursor(l:l, l:c)
   endif
 endfunction
+
+function! CprunWrapper()
+  :AsyncRun cp_run --no_pretty_print "%"
+  :copen
+endfunction
 " END Functions }}}
 
 " Commands {{{
 command! Vimconfig :e ~/.config/nvim/init.vim
 command! Reloadconfig :source ~/.config/nvim/init.vim
+command! Cprun :call CprunWrapper()
 " END Commands }}}
