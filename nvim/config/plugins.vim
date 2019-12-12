@@ -76,6 +76,9 @@ Plug 'kkoomen/vim-doge'
 " Smooth repl interaction from vim
 Plug 'rhysd/reply.vim', { 'on': ['Repl', 'ReplAuto'] }
 
+" Alignment command
+Plug 'godlygeek/tabular'
+
 call plug#end()
 " END Plugin Installations }}}
 
@@ -85,8 +88,6 @@ let g:indentLine_fileTypeExclude = ['json', 'tex', 'markdown']
 
 "Force insert closing braces
 let g:AutoPairsFlyMode = 0
-"To override/remove FlyMode inserted char
-let g:AutoPairsShortcutBackInsert = '<M-b>'
 
 "Show buffers if only one tab
 let g:airline#extensions#tabline#enabled = 1
@@ -143,4 +144,6 @@ let g:vista_executive_for = {
 let g:doge_enable_mappings = 1
 let g:doge_mapping_comment_jump_forward = "<c-d>"
 let g:doge_mapping_comment_jump_backward = "<c-u>"
+
+let g:sleuth_automatic = 1
  "END Plugin Configurations }}}

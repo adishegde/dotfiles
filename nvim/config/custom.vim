@@ -16,6 +16,9 @@ augroup vimrc
 
   "Enable spell check in tex files
   autocmd FileType tex setlocal spell
+
+  "Add $ to auto-pair set for latex files
+  autocmd FileType tex let b:AutoPairs = deepcopy(g:AutoPairs) | let b:AutoPairs["$"] = "$"
 augroup END
 " END Autocommands }}}
 
@@ -29,14 +32,18 @@ function! StripTrailingWhitespaces()
   endif
 endfunction
 
-function! CprunWrapper()
-  :AsyncRun cp_run --no_pretty_print "%"
-  :copen
+function! CprunWrapper(...)
+  if a:0 == 0
+    AsyncRun cp_run --no_pretty_print "%"
+  else
+    exec "AsyncRun cp_run --no_pretty_print -t " . a:1 . " " . @%
+  endif
+  copen
 endfunction
 " END Functions }}}
 
 " Commands {{{
 command! Vimconfig :e ~/.config/nvim/init.vim
 command! Reloadconfig :source ~/.config/nvim/init.vim
-command! Cprun :call CprunWrapper()
+command! -nargs=* Cprun :call CprunWrapper(<f-args>)
 " END Commands }}}
