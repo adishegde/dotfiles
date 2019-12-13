@@ -70,9 +70,6 @@ Plug 'cespare/vim-toml'
 " Run commands asynchronously
 Plug 'skywind3000/asyncrun.vim'
 
-" Documentation
-Plug 'kkoomen/vim-doge'
-
 " Smooth repl interaction from vim
 Plug 'rhysd/reply.vim', { 'on': ['Repl', 'ReplAuto'] }
 
@@ -83,8 +80,7 @@ call plug#end()
 " END Plugin Installations }}}
 
 " Plugin Configurations {{{
-
-let g:indentLine_fileTypeExclude = ['json', 'tex', 'markdown']
+let g:indentLine_bufTypeExclude = ['json', 'tex', 'markdown']
 
 "Force insert closing braces
 let g:AutoPairsFlyMode = 0
@@ -111,39 +107,23 @@ let g:fzf_colors =
 
 let g:arpeggio_timeoutlen=200
 
-let g:mta_filetypes = {
-    \ 'html' : 1,
-    \ 'xhtml' : 1,
-    \ 'xml' : 1,
-    \ 'jinja' : 1,
-    \ 'javascript.jsx' : 1,
-    \}
-
 let g:UltiSnipsSnippetsDir = expand("$HOME/.local/share/nvim/UltiSnips")
 let g:UltiSnipsSnippetDirectories = [expand("$HOME/.local/share/nvim/UltiSnips")]
 let g:UltiSnipsJumpForwardTrigger = "<c-d>"
 let g:UltiSnipsJumpBackwardTrigger = "<c-u>"
-
-let g:tex_flavor = 'latex'
-let g:tex_conceal = ''
 
 let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 
 let g:neoformat_run_all_formatters = 1
 let g:neoformat_enabled_python = ['black', 'docformatter']
 let g:neoformat_enabled_markdown = ['prettier']
-let g:neoformat_enabled_cpp = ['uncrustify']
-let g:neoformat_enabled_java = ['uncrustify']
+let g:neoformat_enabled_cpp = ['clangformat']
 
 " Use only coc.nvim for LSP support
 let g:vista_default_executive = 'coc'
 let g:vista_executive_for = {
     \ 'markdown': 'toc',
     \ }
-
-let g:doge_enable_mappings = 1
-let g:doge_mapping_comment_jump_forward = "<c-d>"
-let g:doge_mapping_comment_jump_backward = "<c-u>"
 
 let g:sleuth_automatic = 1
  "END Plugin Configurations }}}

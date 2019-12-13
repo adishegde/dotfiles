@@ -7,6 +7,12 @@ nnoremap H 0
 onoremap L $
 onoremap H 0
 
+" line text objects for selecting in and
+vnoremap al :normal! 0v$<CR>
+vnoremap il :normal! ^vg_<CR>
+onoremap al :normal val<CR>
+onoremap il :normal vil<CR>
+
 " ranger
 nnoremap <leader>rr :RangerEdit<cr>
 nnoremap <leader>ra :RangerAppend<cr>

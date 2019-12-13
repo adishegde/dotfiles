@@ -1,24 +1,10 @@
 " Autocommands {{{
 augroup vimrc
   autocmd!
-
   "Refresh file when vim gets focus
   autocmd FocusGained,BufEnter * checktime
-
   "Auto-remove trailing spaces for all filetypes except markdown
   autocmd BufWritePre * if &filetype !~? 'markdown' | :call StripTrailingWhitespaces() | endif
-
-  "Indent lines hides quotes in json
-  autocmd Filetype json let g:indentLine_enabled = 0
-
-  "Use foldmethod marker in vimscript files
-  autocmd FileType vim setlocal foldmethod=marker
-
-  "Enable spell check in tex files
-  autocmd FileType tex setlocal spell
-
-  "Add $ to auto-pair set for latex files
-  autocmd FileType tex let b:AutoPairs = deepcopy(g:AutoPairs) | let b:AutoPairs["$"] = "$"
 augroup END
 " END Autocommands }}}
 

@@ -106,7 +106,6 @@ let g:onedark_termcolors=16
 let g:python_host_prog=expand("$HOME/.local/share/nvim/python2/bin/python")
 let g:python3_host_prog=expand("$HOME/.local/share/nvim/python3/bin/python3")
 
-
 "Turn on syntax highlighting
 syntax on
 colorscheme gruvbox
@@ -114,6 +113,8 @@ hi ColorColumn ctermbg=237 guibg=#3c3836
 
 " Tex error check are more painful than helpful
 let g:tex_no_error=1
+let g:tex_flavor = 'latex'
+let g:tex_conceal = ''
 
 "Keep undo history across sessions, by storing in file.
 silent !mkdir ~/.local/share/nvim/undos > /dev/null 2>&1
