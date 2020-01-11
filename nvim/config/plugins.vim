@@ -8,8 +8,8 @@ Plug 'morhetz/gruvbox'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
-" file browser
-Plug 'rafaqz/ranger.vim'
+" ranger
+Plug 'francoiscabrol/ranger.vim'
 
 " auto-completion using language servers
 Plug 'neoclide/coc.nvim', {'do': 'yarn install'}
@@ -126,4 +126,7 @@ let g:vista_executive_for = {
     \ }
 
 let g:sleuth_automatic = 1
+
+let g:ranger_map_keys = 0
+let g:ranger_replace_netrw = 1
  "END Plugin Configurations }}}

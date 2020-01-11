@@ -13,12 +13,6 @@ vnoremap il :normal! ^vg_<CR>
 onoremap al :normal val<CR>
 onoremap il :normal vil<CR>
 
-" ranger
-nnoremap <leader>rr :RangerEdit<cr>
-nnoremap <leader>ra :RangerAppend<cr>
-nnoremap <leader>rc :set operatorfunc=RangerChangeOperator<cr>g@
-nnoremap <leader>rd :RangerCD<cr>
-
 " project wide search/action
 nnoremap <silent> <Leader>pf :Files<CR>
 nnoremap <leader>ps :Ag<Space>
