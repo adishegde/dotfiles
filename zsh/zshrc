@@ -16,7 +16,7 @@ export TERM="xterm-256color"
 export GTAGSLABEL=pygments
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export RIPGREP_CONFIG_PATH="~/.rgignore"
+export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 
 # Git expr syntax error fix
@@ -68,7 +68,7 @@ alias glg='git log --stat'
 alias gst='git status'
 alias gp='git push'
 
-alias l="ls -a"
+alias ls='exa'
 
 alias g14="clang++ -std=c++14"
 alias gntl="g++ -g -O2 -std=c++11 -pthread -march=native -lntl -lgmp -lm -lcrypto"
@@ -83,6 +83,7 @@ export CLICOLOR_FORCE=1
 export LDFLAGS="-L/usr/local/opt/openssl/lib"
 export CPPFLAGS="-I/usr/local/opt/openssl/include"
 export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
+export PATH="/usr/local/opt/llvm/bin:$PATH"
 
 # Load z program
 . `brew --prefix`/etc/profile.d/z.sh
