@@ -95,21 +95,21 @@ set cmdheight=2
 set nobackup
 set nowritebackup
 
+set spelllang=en_gb
+
 "This line enables the true color support.
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-
-"Enable italic font
-let g:onedark_terminal_italics = 1
-let g:onedark_termcolors=16
 
 "Path to python interpretters
 let g:python_host_prog=expand("$HOME/.local/share/nvim/python2/bin/python")
 let g:python3_host_prog=expand("$HOME/.local/share/nvim/python3/bin/python3")
 
 "Turn on syntax highlighting
-syntax on
+syntax enable
 colorscheme gruvbox
 hi ColorColumn ctermbg=237 guibg=#3c3836
+set t_8b=[48;2;%lu;%lu;%lum
+set t_8f=[38;2;%lu;%lu;%lum
 
 " Tex error check are more painful than helpful
 let g:tex_no_error=1
@@ -148,3 +148,9 @@ set shiftwidth=4
 set expandtab
 set softtabstop=0
 set smarttab
+
+" Use rg as grepprg
+if executable("rg")
+  set grepprg=rg\ --vimgrep\ --no-heading
+  set grepformat=%f:%l:%c:%m,%f:%l:%m
+endif

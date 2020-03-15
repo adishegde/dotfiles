@@ -3,6 +3,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 " color scheme
 Plug 'morhetz/gruvbox'
+Plug 'shinchu/lightline-gruvbox.vim'
 
 " generic fuzzy search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -22,9 +23,8 @@ Plug 'jiangmiao/auto-pairs'
 
 Plug 'Yggdroot/indentLine'
 
-" status line and associated themes
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" status line
+Plug 'itchyny/lightline.vim'
 
 Plug 'machakann/vim-sandwich'
 
@@ -76,6 +76,9 @@ Plug 'rhysd/reply.vim', { 'on': ['Repl', 'ReplAuto'] }
 " Alignment command
 Plug 'godlygeek/tabular'
 
+" Jinja syntax support
+Plug 'lepture/vim-jinja'
+
 call plug#end()
 " END Plugin Installations }}}
 
@@ -85,10 +88,15 @@ let g:indentLine_bufTypeExclude = ['json', 'tex', 'markdown']
 "Force insert closing braces
 let g:AutoPairsFlyMode = 0
 
-"Show buffers if only one tab
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme='gruvbox'
-let g:airline_section_z='%p%% : %{SleuthIndicator()} : %l/%L : %c'
+let g:lightline = {}
+let g:lightline.colorscheme = 'gruvbox'
+let g:lightline.active = {
+      \ 'right': [
+      \   ['lineinfo'],
+      \   ['percent'],
+      \   ['filetype', 'fileencoding', 'sleuth_info']
+      \ ]}
+let g:lightline.component_function = {'sleuth_info': 'SleuthIndicator'}
 
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
@@ -129,4 +137,6 @@ let g:sleuth_automatic = 1
 
 let g:ranger_map_keys = 0
 let g:ranger_replace_netrw = 1
+
+let g:tmux_navigator_no_mappings = 1
  "END Plugin Configurations }}}

@@ -7,15 +7,22 @@ nnoremap H 0
 onoremap L $
 onoremap H 0
 
+nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
+
 " line text objects for selecting in and
 vnoremap al :normal! 0v$<CR>
 vnoremap il :normal! ^vg_<CR>
 onoremap al :normal val<CR>
 onoremap il :normal vil<CR>
 
+nnoremap <silent> <leader>rr :RangerCurrentDirectory<CR>
+
 " project wide search/action
 nnoremap <silent> <Leader>pf :Files<CR>
-nnoremap <leader>ps :Ag<Space>
+nnoremap <leader>ps :Rg<Space>
 
 " buffer wide search/action
 nnoremap <silent> <Leader>bb :Buffers<CR>
