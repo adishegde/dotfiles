@@ -5,6 +5,7 @@ augroup vimrc
   autocmd FocusGained,BufEnter * checktime
   "Auto-remove trailing spaces for all filetypes except markdown
   autocmd BufWritePre * if &filetype !~? 'markdown' | :call StripTrailingWhitespaces() | endif
+  autocmd User CocStatusChange,CocDiagnosticChange :call lightline#update()
 augroup END
 " END Autocommands }}}
 
@@ -25,6 +26,20 @@ function! CprunWrapper(...)
     exec "AsyncRun cp_run --no_pretty_print -t " . a:1 . " " . @%
   endif
   copen
+endfunction
+
+" Copied from coc-nvim docs
+function! CocStatusDiagnostic() abort
+  let info = get(b:, 'coc_diagnostic_info', {})
+  if empty(info) | return '' | endif
+  let msgs = []
+  if get(info, 'error', 0)
+    call add(msgs, 'E' . info['error'])
+  endif
+  if get(info, 'warning', 0)
+    call add(msgs, 'W' . info['warning'])
+  endif
+  return join(msgs, ' ')
 endfunction
 " END Functions }}}
 

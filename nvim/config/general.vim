@@ -106,7 +106,7 @@ let g:python3_host_prog=expand("$HOME/.local/share/nvim/python3/bin/python3")
 
 "Turn on syntax highlighting
 syntax enable
-colorscheme gruvbox
+colorscheme ci_dark
 hi ColorColumn ctermbg=237 guibg=#3c3836
 set t_8b=[48;2;%lu;%lu;%lum
 set t_8f=[38;2;%lu;%lu;%lum

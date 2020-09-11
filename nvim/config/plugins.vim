@@ -4,6 +4,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 " color scheme
 Plug 'morhetz/gruvbox'
 Plug 'shinchu/lightline-gruvbox.vim'
+Plug 'chuling/ci_dark'
 
 " generic fuzzy search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -21,8 +22,6 @@ Plug 'tpope/vim-commentary'
 " support for brackets, quotes etc
 Plug 'jiangmiao/auto-pairs'
 
-Plug 'Yggdroot/indentLine'
-
 " status line
 Plug 'itchyny/lightline.vim'
 
@@ -30,9 +29,6 @@ Plug 'machakann/vim-sandwich'
 
 " helpful text objects like arguements etc
 Plug 'wellle/targets.vim'
-
-" incremental search
-Plug 'haya14busa/is.vim'
 
 " extensive key-chord support
 Plug 'kana/vim-arpeggio'
@@ -70,9 +66,6 @@ Plug 'cespare/vim-toml'
 " Run commands asynchronously
 Plug 'skywind3000/asyncrun.vim'
 
-" Smooth repl interaction from vim
-Plug 'rhysd/reply.vim', { 'on': ['Repl', 'ReplAuto'] }
-
 " Alignment command
 Plug 'godlygeek/tabular'
 
@@ -83,20 +76,19 @@ call plug#end()
 " END Plugin Installations }}}
 
 " Plugin Configurations {{{
-let g:indentLine_bufTypeExclude = ['json', 'tex', 'markdown']
-
 "Force insert closing braces
 let g:AutoPairsFlyMode = 0
 
 let g:lightline = {}
-let g:lightline.colorscheme = 'gruvbox'
+let g:lightline.colorscheme = 'ci_dark'
 let g:lightline.active = {
       \ 'right': [
       \   ['lineinfo'],
       \   ['percent'],
-      \   ['filetype', 'fileencoding', 'sleuth_info']
+      \   ['filetype', 'fileencoding', 'sleuth_info'],
+      \   ['cocdiagnostic']
       \ ]}
-let g:lightline.component_function = {'sleuth_info': 'SleuthIndicator'}
+let g:lightline.component_function = {'sleuth_info': 'SleuthIndicator', 'cocdiagnostic': 'CocStatusDiagnostic'}
 
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],

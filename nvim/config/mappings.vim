@@ -26,7 +26,6 @@ nnoremap <leader>ps :Rg<Space>
 
 " buffer wide search/action
 nnoremap <silent> <Leader>bb :Buffers<CR>
-nnoremap <silent> <Leader>bc :BCommits<CR>
 nnoremap <silent> <Leader>bd :bd<CR>
 nnoremap <silent> <Leader>bn :enew<CR>
 
