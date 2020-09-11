@@ -101,7 +101,7 @@ set spelllang=en_gb
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 "Path to python interpretters
-let g:python_host_prog=expand("$HOME/.local/share/nvim/python2/bin/python")
+let g:loaded_python_provider = 0
 let g:python3_host_prog=expand("$HOME/.local/share/nvim/python3/bin/python3")
 
 "Turn on syntax highlighting
