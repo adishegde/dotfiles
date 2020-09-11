@@ -45,3 +45,7 @@ GRTAGS
 .projectile
 .tern-port
 .nvmrc
+compile_commands.json
+.clangd
+*.bbl
+*.run.xml
