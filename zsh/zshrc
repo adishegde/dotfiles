@@ -3,39 +3,17 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+# Use 'jk' to escape in vi-mode
 bindkey -M viins 'jk' vi-cmd-mode
 
 # Keep your system specific configuration here
 [ -f "$HOME/.zshrc-local" ] && source "$HOME/.zshrc-local"
 
-# NVM setup
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-
 export TERM="xterm-256color"
-export GTAGSLABEL=pygments
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
-
-# Git expr syntax error fix
-export SPACESHIP_DIR_TRUNC_REPO=false
-export SPACESHIP_PROMPT_ORDER=(
-  time          # Time stamps section
-  user          # Username section
-  dir           # Current directory section
-  host          # Hostname section
-  git           # Git section (git_branch + git_status)
-  docker        # Docker section
-  conda         # virtualenv section
-  exec_time     # Execution time
-  line_sep      # Line break
-  vi_mode       # Vi-mode indicator
-  jobs          # Background jobs indicator
-  exit_code     # Exit code section
-  char          # Prompt character
-)
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
 ZSH_AUTOSUGGEST_USE_ASYNC="true"
@@ -45,9 +23,6 @@ alias zshconfig="$EDITOR ~/.zshrc"
 alias vimconfig="$EDITOR ~/.config/nvim/init.vim"
 
 alias v="nvim"
-
-# start virtual box VM from command line
-alias start-vm="VBoxManage startvm --type headless"
 
 alias tmux="tmux -2"
 alias tsw="tmux switchc -t"
@@ -68,8 +43,6 @@ alias gp='git push'
 
 alias ls='exa'
 
-alias g14="clang++ -std=c++14"
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Use OSX true colours
@@ -77,14 +50,4 @@ unset LSCOLORS
 export CLICOLOR=1
 export CLICOLOR_FORCE=1
 
-export LDFLAGS="-L/usr/local/opt/openssl/lib"
-export CPPFLAGS="-I/usr/local/opt/openssl/include"
-export C_INCLUDE_PATH="/usr/local/include"
-export CPLUS_INCLUDE_PATH="/usr/local/include"
-export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
-export PATH="/usr/local/opt/llvm/bin:$PATH"
-
-# Load z program
-. `brew --prefix`/etc/profile.d/z.sh
-
-eval "$(pyenv init -)"
+eval "$(starship init zsh)"
