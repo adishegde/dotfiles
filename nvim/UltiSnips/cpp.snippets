@@ -1,0 +1,399 @@
+snippet cptemp "CP template" b
+#include <bits/stdc++.h>
+
+typedef long long ll;
+typedef long double lld;
+
+using namespace std;
+
+const bool DEBUG = 1;
+
+#define sd(x) scanf("%d", &x)
+#define sd2(x, y) scanf("%d%d", &x, &y)
+#define sd3(x, y, z) scanf("%d%d%d", &x, &y, &z)
+#define endl "\n"
+#define fi first
+#define se second
+#define pb(x) push_back(x)
+#define mp(x, y) make_pair(x, y)
+#define LET(x, a) __typeof(a) x(a)
+#define foreach(it, v) for (LET(it, v.begin()); it != v.end(); it++)
+#define MEMS(a, b) memset(a, b, sizeof(a))
+#define FAST_IO                                                                \
+    ios_base::sync_with_stdio(false);                                          \
+    cin.tie(NULL);                                                             \
+    cout.tie(NULL)
+#define FILE_IO                                                                \
+    freopen("input.txt", "r", stdin);                                          \
+    freopen("output.txt", "w", stdout)
+#define all(c) c.begin(), c.end()
+#define inf 1000000000000000001
+#define epsilon 1e-6
+
+#define RUN_T                                                                  \
+    int _t;                                                                    \
+    cin >> _t;                                                                 \
+    while (_t--)
+
+#define tr(...)                                                                \
+    if (DEBUG) {                                                               \
+        cout << __FUNCTION__ << ' ' << __LINE__ << " = ";                      \
+        trace(#__VA_ARGS__, __VA_ARGS__);                                      \
+    }
+
+template <typename S, typename T>
+ostream &operator<<(ostream &out, pair<S, T> const &p) {
+    out << '(' << p.fi << ", " << p.se << ')';
+    return out;
+}
+
+template <typename T> ostream &operator<<(ostream &out, set<T> const &v) {
+    for (auto i = v.begin(); i != v.end(); i++)
+        out << (*i) << ' ';
+    return out;
+}
+
+template <typename T, typename V>
+ostream &operator<<(ostream &out, map<T, V> const &v) {
+    for (auto i = v.begin(); i != v.end(); i++)
+        out << "\n" << (i->first) << " : " << (i->second);
+    return out;
+}
+
+template <typename T, typename V>
+ostream &operator<<(ostream &out, unordered_map<T, V> const &v) {
+    for (auto i = v.begin(); i != v.end(); i++)
+        out << "\n" << (i->first) << " : " << (i->second);
+    return out;
+}
+
+template <typename T> ostream &operator<<(ostream &out, multiset<T> const &v) {
+    for (auto i = v.begin(); i != v.end(); i++)
+        out << (*i) << ' ';
+    return out;
+}
+
+template <typename T>
+ostream &operator<<(ostream &out, unordered_set<T> const &v) {
+    for (auto i = v.begin(); i != v.end(); i++)
+        out << (*i) << ' ';
+    return out;
+}
+
+template <typename T>
+ostream &operator<<(ostream &out, unordered_multiset<T> const &v) {
+    for (auto i = v.begin(); i != v.end(); i++)
+        out << (*i) << ' ';
+    return out;
+}
+
+template <typename T> ostream &operator<<(ostream &out, vector<T> const &v) {
+    ll l = v.size();
+    for (ll i = 0; i < l - 1; i++)
+        out << v[i] << ' ';
+    if (l > 0)
+        out << v[l - 1];
+    return out;
+}
+
+template <typename T> void trace(const char *name, T &&arg1) {
+    cout << name << " : " << arg1 << endl;
+}
+
+template <typename T, typename... Args>
+void trace(const char *names, T &&arg1, Args &&... args) {
+    const char *comma = strchr(names + 1, ',');
+    cout.write(names, comma - names) << " : " << arg1 << " | ";
+    trace(comma + 1, args...);
+}
+
+#define int ll
+
+int32_t main() {
+    FAST_IO;
+}
+
+/*
+<testcases>
+</testcases>
+*/
+endsnippet
+
+snippet cptest "Define test case" b
+<test>
+$1
+</test>
+endsnippet
+
+snippet cplis "Longest Increasing Subsequence" b
+int ceil_index(vector<int> &v, int l, int r, int key) {
+    while (r - l > 1) {
+        int m = l + (r - l) / 2;
+        if (v[m] >= key)
+            r = m;
+        else
+            l = m;
+    }
+
+    return r;
+}
+
+int longest_increasing_subsequence(vector<int> &v) {
+    if (v.size() == 0)
+        return 0;
+
+    std::vector<int> tail(v.size(), 0);
+    int length = 1; // always points empty slot in tail
+
+    tail[0] = v[0];
+    for (size_t i = 1; i < v.size(); i++) {
+        // new smallest value
+        if (v[i] < tail[0])
+            tail[0] = v[i];
+
+        // v[i] extends largest subsequence
+        else if (v[i] > tail[length - 1])
+            tail[length++] = v[i];
+
+        // v[i] will become end candidate of an existing
+        // subsequence or Throw away larger elements in all
+        // LIS, to make room for upcoming grater elements
+        // than v[i] (and also, v[i] would have already
+        // appeared in one of LIS, identify the location
+        // and replace it)
+        else
+            tail[ceil_index(tail, -1, length - 1, v[i])] = v[i];
+    }
+
+    return length;
+}
+endsnippet
+
+snippet cpdsu "Disjoint set union datastructure" b
+class DSU {
+  public:
+    int n;
+    int setCount;
+    vector<int> size;
+    vector<int> tree;
+
+    DSU(int n) : size(n, 1), tree(n) {
+        n = n;
+        setCount = n;
+
+        for (int i = 0; i < n; i++)
+            tree[i] = i;
+    }
+
+    int parent(int i) {
+        if (tree[i] == i)
+            return i;
+
+        return tree[i] = parent(tree[i]);
+    }
+
+    void join(int i, int j) {
+        int set1 = parent(i);
+        int set2 = parent(j);
+        if (set1 == set2)
+            return;
+        setCount--;
+
+        if (size[set1] < size[set2])
+            swap(set1, set2);
+
+        size[set1] += size[set2];
+        tree[set2] = set1;
+    }
+
+    vector<set<int>> get_sets() {
+        vector<set<int>> results;
+        map<int, set<int>> t;
+
+        for (int i = 0; i < n; i++)
+            t[parent(i)].insert(i);
+
+        for (auto v : t)
+            results.push_back(v.second);
+
+        return results;
+    }
+};
+endsnippet
+
+snippet cpfenwick "Zero indexed Fenwick tree" b
+/* zero indexed fenwick tree */
+template <typename T> class FenwickTree {
+public:
+    int size;
+    vector<T> tree;
+
+    FenwickTree(int n) : tree(n + 1) { size = n + 1; }
+
+    FenwickTree(int n, T init) : tree(n + 1, init) { size = n + 1; }
+
+    void update(int pos, T val) {
+        for (int i = pos + 1; i < size; i += (i) & (-i)) {
+            tree[i] += val; // operation
+        }
+    }
+
+    T query(int x) {
+        T sum{};
+
+        for (int i = x; i > 0; i -= (i) & (-i)) {
+            sum += tree[i]; // operation
+        }
+
+        return sum;
+    }
+
+    T query(int l, int r) { return query(r) - query(l); } // operation
+};
+endsnippet
+
+snippet cpsegtree_iter "Zero indexed segment tree with no recursion" b
+// zero indexed segment tree
+template <typename T> class SegTree {
+public:
+    vector<T> tree;
+    int n;
+
+    T op(T l, T r) { return l + r; }
+
+    SegTree(int n) : tree(2 * n) { this->n = n; }
+
+    SegTree(vector<T> &a) : tree(2 * a.size()) {
+        n = (int)a.size();
+
+        for (int i = n; i < 2 * n; ++i)
+            tree[i] = a[i - n];
+
+        build();
+    }
+
+    void build() {
+        for (int i = n - 1; i > 0; --i) {
+            tree[i] = op(tree[2 * i], tree[2 * i + 1]);
+        }
+    }
+
+    void modify(int pos, T val) {
+        tree[pos + n] = val; // update leaf
+
+        // rebuild tree from parent of updated leaf
+        for (int i = (pos + n) >> 1; i > 0; i >>= 1) {
+            tree[i] = op(tree[2 * i], tree[2 * i + 1]);
+        }
+    }
+
+    // returns [l, r)
+    T query(int l, int r) {
+        T resl{}, resr{};
+
+        for (l += n, r += n; l < r; l >>= 1, r >>= 1) {
+            if (l & 1)
+                resl = op(resl, tree[l++]);
+            if (r & 1)
+                resr = op(tree[--r], resr);
+        }
+
+        return op(resl, resr);
+    }
+};
+endsnippet
+
+snippet cpsegtree_lazy "Zero indexed segment tree with lazy propogation" b
+// zero indexed segment tree
+class SegTree {
+public:
+    vector<int> tree;
+    vector<int> lazy;
+    int n;
+
+    SegTree(int n) : tree(4 * n), lazy(4 * n) { this->n = n; }
+
+    SegTree(vector<int> &a) : tree(4 * a.size()), lazy(4 * a.size()) {
+        n = a.size();
+        build(1, 0, n, a);
+    }
+
+    // [l, r)
+    void build(int v, int l, int r, vector<int> &a) {
+        if (l + 1 == r) {
+            tree[v] = a[l];
+            return;
+        }
+
+        int m = (l + r) >> 1;
+
+        build(2 * v, l, m, a);
+        build(2 * v + 1, m, r, a);
+
+        tree[v] = tree[2 * v] + tree[2 * v + 1];
+    }
+
+    // l and r for computing interval length
+    // [l, r)
+    void push(int v, int l, int r) {
+        int m = (l + r) >> 1;
+        int kl = m - l, kr = r - m;
+
+        tree[2 * v] += lazy[v] * kl;
+        tree[2 * v + 1] += lazy[v] * kr;
+
+        lazy[2 * v] += lazy[v];
+        lazy[2 * v + 1] += lazy[v];
+
+        lazy[v] = 0;
+    }
+
+    // returns [ul, ur)
+    // [l, r)
+    void update(int v, int l, int r, int ul, int ur, int val) {
+        if (ul >= ur)
+            return;
+
+        if (l == ul && r == ur) {
+            tree[v] += val * (r - l);
+            lazy[v] += val;
+            return;
+        }
+
+        if (lazy[v] != 0) {
+            push(v, l, r);
+        }
+
+        int m = (l + r) >> 1;
+
+        update(2 * v, l, m, ul, min(ur, m), val);
+        update(2 * v + 1, m, r, max(ul, m), ur, val);
+
+        tree[v] = tree[2 * v] + tree[2 * v + 1];
+    }
+
+    // wrapper
+    void update(int ul, int ur, int val) { update(1, 0, n, ul, ur, val); }
+
+    // returns [ql, qr)
+    // [l, r)
+    int query(int v, int l, int r, int ql, int qr) {
+        if (ql >= qr)
+            return 0;
+
+        if (ql <= l && qr >= r)
+            return tree[v];
+
+        if (lazy[v] != 0)
+            push(v, l, r);
+
+        int m = (l + r) >> 1;
+
+        return query(2 * v, l, m, ql, min(qr, m)) +
+               query(2 * v + 1, m, r, max(m, ql), qr);
+    }
+
+    // wrapper
+    int query(int ql, int qr) { return query(1, 0, n, ql, qr); }
+};
+endsnippet
