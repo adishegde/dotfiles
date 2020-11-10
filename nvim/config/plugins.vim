@@ -6,58 +6,59 @@ Plug 'morhetz/gruvbox'
 Plug 'shinchu/lightline-gruvbox.vim'
 Plug 'chuling/ci_dark'
 
-" generic fuzzy search
+" Generic fuzzy search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
-" ranger
+" Ranger
 Plug 'francoiscabrol/ranger.vim'
 
-" auto-completion using language servers
+" Auto-completion using language servers
 Plug 'neoclide/coc.nvim', {'do': 'yarn install'}
 
-" easy commenting
+" Easy commenting
 Plug 'tpope/vim-commentary'
 
-" support for brackets, quotes etc
+" Support for brackets, quotes etc
 Plug 'jiangmiao/auto-pairs'
 
-" status line
+" Lightweight status line
 Plug 'itchyny/lightline.vim'
 
+" Surround operators
 Plug 'machakann/vim-sandwich'
 
-" helpful text objects like arguements etc
+" Helpful text objects like arguements etc
 Plug 'wellle/targets.vim'
 
-" extensive key-chord support
+" Extensive key-chord support
 Plug 'kana/vim-arpeggio'
 
-" automatically set indentation related settings
+" Automatically set indentation related settings
 Plug 'tpope/vim-sleuth'
 
-" command to rename files correctly
+" Command to rename files correctly
 Plug 'danro/rename.vim'
 
-" basic git integration
+" Basic git integration
 Plug 'airblade/vim-gitgutter'
 
-" snippet support
+" Snippet support
 Plug 'SirVer/ultisnips'
 
-" icons
+" Icons
 Plug 'ryanoasis/vim-devicons'
 
-" sane buffer close logic
+" Sane buffer close logic
 Plug 'rbgrouleff/bclose.vim'
 
-" smooth tmux and vim split movement
+" Smooth tmux and vim split movement
 Plug 'christoomey/vim-tmux-navigator'
 
-" tagbar using LSP
+" Tagbar using LSP
 Plug 'liuchengxu/vista.vim'
 
-" autoformatting
+" Autoformatting
 Plug 'sbdchd/neoformat'
 
 " TOML syntax support
@@ -69,8 +70,8 @@ Plug 'skywind3000/asyncrun.vim'
 " Alignment command
 Plug 'godlygeek/tabular'
 
-" Jinja syntax support
-Plug 'lepture/vim-jinja'
+" LaTeX folding support
+Plug 'matze/vim-tex-fold'
 
 call plug#end()
 " END Plugin Installations }}}

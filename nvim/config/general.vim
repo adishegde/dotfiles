@@ -84,8 +84,6 @@ set t_Co=256
 set signcolumn=yes
 set shortmess+=c
 set encoding=utf8
-set guifont=<FONT_NAME>:h<FONT_SIZE>
-set guifont=DroidSansMono_Nerd_Font:h11
 set updatetime=100
 
 "Better display for messages
@@ -95,7 +93,7 @@ set cmdheight=2
 set nobackup
 set nowritebackup
 
-set spelllang=en_gb
+set spelllang=en_us
 
 "This line enables the true color support.
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1

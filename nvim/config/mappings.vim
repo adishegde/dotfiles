@@ -1,12 +1,6 @@
 " map 'jk' to escape
 call arpeggio#map('ixoc', '', 0, 'jk', '<Esc>')
 
-" remap L and H to go to beginning and end of line
-nnoremap L $
-nnoremap H 0
-onoremap L $
-onoremap H 0
-
 nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <C-k> :TmuxNavigateUp<cr>

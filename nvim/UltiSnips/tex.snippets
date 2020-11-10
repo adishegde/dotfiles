@@ -9,7 +9,6 @@ snippet perms_n_comb "Permutation and Combination commands"
 endsnippet
 
 snippet argminmax "Add argmax and argmin commands"
-\usepackage{amsmath}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 endsnippet
@@ -58,4 +57,10 @@ snippet mdframed "Mdframed with defaults"
 \begin{mdframed}[userdefinedwidth=${1:0.7}\textwidth, align=center, frametitle=$2, frametitlerulewidth=1pt]
     ${VISUAL}
 \end{mdframed}
+endsnippet
+
+snippet mathpackages "Common math packages"
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
 endsnippet

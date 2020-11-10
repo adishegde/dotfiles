@@ -3,8 +3,11 @@ augroup vimrc
   autocmd!
   "Refresh file when vim gets focus
   autocmd FocusGained,BufEnter * checktime
+
   "Auto-remove trailing spaces for all filetypes except markdown
   autocmd BufWritePre * if &filetype !~? 'markdown' | :call StripTrailingWhitespaces() | endif
+
+  " Update diagnostics info on status line
   autocmd User CocStatusChange,CocDiagnosticChange :call lightline#update()
 augroup END
 " END Autocommands }}}
