@@ -74,7 +74,7 @@ Plug 'godlygeek/tabular'
 Plug 'matze/vim-tex-fold'
 
 call plug#end()
-" END Plugin Installations }}}
+" Plugin Installations }}}
 
 " Plugin Configurations {{{
 "Force insert closing braces
@@ -132,4 +132,4 @@ let g:ranger_map_keys = 0
 let g:ranger_replace_netrw = 1
 
 let g:tmux_navigator_no_mappings = 1
- "END Plugin Configurations }}}
+ " Plugin Configurations }}}
