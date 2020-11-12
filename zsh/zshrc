@@ -9,6 +9,7 @@ bindkey -M viins 'jk' vi-cmd-mode
 # Keep your system specific configuration here
 [ -f "$HOME/.zshrc-local" ] && source "$HOME/.zshrc-local"
 
+# Environment variables {{{
 export TERM="xterm-256color"
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -17,7 +18,9 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden'
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
 ZSH_AUTOSUGGEST_USE_ASYNC="true"
+# Env variables }}}
 
+# Aliases {{{
 # Easy access to config
 alias zshconfig="$EDITOR ~/.zshrc"
 alias vimconfig="$EDITOR ~/.config/nvim/init.vim"
@@ -42,6 +45,19 @@ alias gs='git status'
 alias gp='git push'
 
 alias ls='exa'
+# Aliases }}}
+
+# Custom Commands {{{
+export function timer() {
+  (\
+    sleep $1 &&\
+    terminal-notifier -title 'Timer' \
+      -message "${2:-Timer has been completed}" \
+      -sound default \
+      -ignoreDnD\
+  )&
+}
+# Custom Commands }}}
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
