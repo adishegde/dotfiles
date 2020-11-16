@@ -4,7 +4,6 @@ call plug#begin('~/.local/share/nvim/plugged')
 " color scheme
 Plug 'morhetz/gruvbox'
 Plug 'shinchu/lightline-gruvbox.vim'
-Plug 'chuling/ci_dark'
 
 " Generic fuzzy search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -81,7 +80,7 @@ call plug#end()
 let g:AutoPairsFlyMode = 0
 
 let g:lightline = {}
-let g:lightline.colorscheme = 'ci_dark'
+let g:lightline.colorscheme = 'gruvbox'
 let g:lightline.active = {
       \ 'right': [
       \   ['lineinfo'],
