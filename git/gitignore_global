@@ -37,7 +37,8 @@
 ehthumbs.db
 Thumbs.db
 
-#My additions
+# My additions #
+######################
 tags
 GPATH
 GTAGS
@@ -49,3 +50,4 @@ compile_commands.json
 .clangd
 *.bbl
 *.run.xml
+.cache
