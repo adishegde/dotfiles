@@ -7,14 +7,14 @@ fi
 bindkey -M viins 'jk' vi-cmd-mode
 
 # Environment variables {{{
-export TERM="xterm-256color"
+export TERM='xterm-256color'
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+export RIPGREP_CONFIG_PATH='$HOME/.ripgreprc'
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
-ZSH_AUTOSUGGEST_USE_ASYNC="true"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+ZSH_AUTOSUGGEST_USE_ASYNC='true'
 # Env variables }}}
 
 # Aliases {{{
@@ -22,24 +22,28 @@ ZSH_AUTOSUGGEST_USE_ASYNC="true"
 alias zshconfig="$EDITOR ~/.zshrc"
 alias vimconfig="$EDITOR ~/.config/nvim/init.vim"
 
-alias v="nvim"
+alias v='nvim'
 
-alias tmux="tmux -2"
-alias tsw="tmux switchc -t"
+alias tmux='tmux -2'
+alias tsw='tmux switchc -t'
 alias tl='tmux list-sessions'
-alias trw="tmux renamew -t"
-alias td="tmux detach-client"
+alias trw='tmux renamew -t'
+alias td='tmux detach-client'
 alias ta='tmux attach -t'
 alias ts='tmux new-session -s'
 
-alias g="git"
+alias g='git'
 alias ga='git add'
 alias gc='git commit -v'
 alias gd='git diff'
-alias gds="git diff --staged"
+alias gds='git diff --staged'
 alias glog='git log --oneline --decorate --graph'
 alias gs='git status'
 alias gp='git push'
+
+alias dk='docker'
+alias dcls='docker container ls -a'
+alias dils='docker images'
 
 alias ls='exa'
 # Aliases }}}
