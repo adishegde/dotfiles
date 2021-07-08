@@ -6,9 +6,6 @@ augroup vimrc
 
   "Auto-remove trailing spaces for all filetypes except markdown
   autocmd BufWritePre * if &filetype !~? 'markdown' | :call StripTrailingWhitespaces() | endif
-
-  " Update diagnostics info on status line
-  autocmd User CocStatusChange,CocDiagnosticChange :call lightline#update()
 augroup END
 " END Autocommands }}}
 
@@ -31,18 +28,21 @@ function! CprunWrapper(...)
   copen
 endfunction
 
-" Copied from coc-nvim docs
-function! CocStatusDiagnostic() abort
-  let info = get(b:, 'coc_diagnostic_info', {})
-  if empty(info) | return '' | endif
-  let msgs = []
-  if get(info, 'error', 0)
-    call add(msgs, 'E' . info['error'])
+let s:soft_wrap_enabled = 0
+function! ToggleSoftWrap()
+  if s:soft_wrap_enabled
+    nunmap <silent> j
+    nunmap <silent> k
+    nunmap <silent> 0
+    nunmap <silent> $
+    let s:soft_wrap_enabled = 0
+  else
+    nnoremap <silent> j gj
+    nnoremap <silent> k gk
+    nnoremap <silent> 0 g0
+    nnoremap <silent> $ g$
+    let s:soft_wrap_enabled = 1
   endif
-  if get(info, 'warning', 0)
-    call add(msgs, 'W' . info['warning'])
-  endif
-  return join(msgs, ' ')
 endfunction
 " END Functions }}}
 
@@ -50,4 +50,5 @@ endfunction
 command! Vimconfig :e ~/.config/nvim/init.vim
 command! Reloadconfig :source ~/.config/nvim/init.vim
 command! -nargs=* Cprun :call CprunWrapper(<f-args>)
+command! ToggleSoftWrap :call ToggleSoftWrap()
 " END Commands }}}

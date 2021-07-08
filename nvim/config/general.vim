@@ -76,7 +76,8 @@ set fillchars+=vert:\│
 set pumheight=30
 
 "Set syntax based folding
-set foldmethod=syntax
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
 
 set nofoldenable
 set colorcolumn=80
@@ -98,13 +99,16 @@ set spelllang=en_us
 "This line enables the true color support.
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
+set completeopt=menuone,noselect
+
 "Path to python interpretters
 let g:loaded_python_provider = 0
 let g:python3_host_prog=expand("$HOME/.local/share/nvim/python3/bin/python3")
 
 "Turn on syntax highlighting
 syntax enable
-colorscheme gruvbox
+let g:gruvbox_material_background = 'soft'
+colorscheme gruvbox-material
 hi ColorColumn ctermbg=237 guibg=#3c3836
 set t_8b=[48;2;%lu;%lu;%lum
 set t_8f=[38;2;%lu;%lu;%lum
