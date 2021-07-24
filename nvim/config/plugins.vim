@@ -2,7 +2,7 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
 " color scheme
-Plug 'sainnhe/gruvbox-material'
+Plug 'morhetz/gruvbox'
 Plug 'shinchu/lightline-gruvbox.vim'
 
 " Generic fuzzy search
@@ -66,6 +66,9 @@ Plug 'sbdchd/neoformat'
 
 " Alignment command
 Plug 'godlygeek/tabular'
+
+" Highlight current search result
+Plug 'adamheins/vim-highlight-match-under-cursor'
 
 call plug#end()
 " Plugin Installations }}}
@@ -172,7 +175,7 @@ require('telescope').setup{
 EOF
 
 let g:lightline = {}
-let g:lightline.colorscheme = 'gruvbox_material'
+let g:lightline.colorscheme = 'gruvbox'
 let g:lightline.active = {
       \ 'right': [
       \   ['lineinfo'],
@@ -200,5 +203,4 @@ let g:tmux_navigator_no_mappings = 1
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-
  " Plugin Configurations }}}
