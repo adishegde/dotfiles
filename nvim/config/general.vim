@@ -99,7 +99,7 @@ set spelllang=en_us
 "This line enables the true color support.
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
-set completeopt=menuone,noselect
+set completeopt=menu,menuone,noselect
 
 "Path to python interpretters
 let g:loaded_python_provider = 0

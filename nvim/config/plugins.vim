@@ -7,15 +7,18 @@ Plug 'shinchu/lightline-gruvbox.vim'
 
 " Generic fuzzy search
 Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope.nvim'
 
 " Ranger
 Plug 'francoiscabrol/ranger.vim'
 
 " Auto-completion using language servers
-Plug 'hrsh7th/nvim-compe'
 Plug 'neovim/nvim-lspconfig'
-Plug 'GoldsteinE/compe-latex-symbols'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+Plug 'hrsh7th/nvim-cmp'
 Plug 'onsails/lspkind-nvim'
 Plug 'ray-x/lsp_signature.nvim'
 
@@ -79,32 +82,49 @@ call plug#end()
 
 " Plugin Configurations {{{
 lua << EOF
--- LSP config
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
+-- Cmp config
+local cmp = require('cmp')
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      vim.fn["UltiSnips#Anon"](args.body)
+    end,
+  },
+  mapping = {
+    ['<C-j>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+    ['<C-k>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-u>'] = cmp.mapping.scroll_docs(4),
+    ['<C-e>'] = cmp.mapping.complete(),
+    ['<C-x>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'ultisnips' },
+    { name = 'buffer' },
+    { name = 'neorg' },
   }
-}
+})
 
+-- LSP config
 local nvim_lsp = require('lspconfig')
 
-nvim_lsp.rust_analyzer.setup{capabilities = capabilities}
-nvim_lsp.pyright.setup{}
-nvim_lsp.texlab.setup{}
-nvim_lsp.gopls.setup{}
+local capabilities = require('cmp_nvim_lsp').update_capabilities(
+  vim.lsp.protocol.make_client_capabilities()
+)
+
+nvim_lsp.pyright.setup{capabilities = capabilities}
+nvim_lsp.texlab.setup{capabilities = capabilities}
+nvim_lsp.gopls.setup{capabilities = capabilities}
 nvim_lsp.clangd.setup{
+  capabilities = capabilities,
   cmd = {"clangd", "--background-index", "--clang-tidy"},
   on_new_config = function(new_config, new_root_dir)
     new_config.cmd = {"clangd", "--background-index", "--clang-tidy"}
   end,
 }
 
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
@@ -112,7 +132,6 @@ local on_attach = function(client, bufnr)
   -- Mappings.
   local opts = { noremap=true, silent=true }
 
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
   buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
   buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
@@ -131,7 +150,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "clangd", "pyright", "texlab", "gopls"}
+local servers = { "clangd", "pyright", "texlab", "gopls" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
@@ -151,10 +170,9 @@ require('lspkind').init({})
 
 -- Autopairs config
 local npairs = require'nvim-autopairs'
+
 local Rule = require('nvim-autopairs.rule')
-npairs.setup({
-  enable_check_bracket_line = false
-})
+npairs.setup({ enable_check_bracket_line = false })
 npairs.add_rules({
   Rule(' ', ' ')
     :with_pair(function (opts)
@@ -163,9 +181,12 @@ npairs.add_rules({
     end),
   Rule("$", "$",{"tex", "latex"})
 })
-require("nvim-autopairs.completion.compe").setup({
+
+require('nvim-autopairs.completion.cmp').setup({
   map_cr = true,
-  map_complete = true
+  map_complete = true,
+  auto_select = true,
+  insert = false
 })
 
 -- Neorg setup
@@ -180,6 +201,11 @@ require('neorg').setup {
         }
       }
     },
+    ["core.norg.completion"] = {
+      config = {
+        engine = "nvim-cmp"
+      }
+    }
   },
   hook = function()
     local neorg_leader = "<leader>o" -- You may also want to set this to <Leader>o for "organization"
@@ -188,28 +214,14 @@ require('neorg').setup {
     neorg_callbacks.on_event("core.keybinds.events.enable_keybinds", function(_, keybinds)
       keybinds.map_event_to_mode("norg", {
         n = { -- Bind keys in normal mode
-          { "<leader>otd", "core.norg.qol.todo_items.todo.task_done" },
-          { "<leader>otu", "core.norg.qol.todo_items.todo.task_undone" },
-          { "<leader>otp", "core.norg.qol.todo_items.todo.task_pending" },
-          { "<leader>otc", "core.norg.qol.todo_items.todo.task_cycle" }
+          { "<leader>td", "core.norg.qol.todo_items.todo.task_done" },
+          { "<leader>tu", "core.norg.qol.todo_items.todo.task_undone" },
+          { "<leader>tp", "core.norg.qol.todo_items.todo.task_pending" },
+          { "<leader>tc", "core.norg.qol.todo_items.todo.task_cycle" }
         },
       }, { silent = true, noremap = true })
     end)
   end
-}
-
--- Compe config
-require'compe'.setup {
-  source = {
-    path = true;
-    buffer = true;
-    spell = true;
-    nvim_lsp = true;
-    nvim_lua = true;
-    ultisnips = true;
-    latex_symbols = true;
-    neorg = true;
-  };
 }
 
 -- Tree-sitter config
@@ -248,6 +260,14 @@ require'nvim-web-devicons'.setup {
 -- Telescope setup
 local actions = require("telescope.actions")
 require('telescope').setup{
+  extensions = {
+    fzf = {
+      fuzzy = true,
+      override_generic_sorter = true,
+      override_file_sorter = true,
+      case_mode = "smart_case",
+    }
+  },
   defaults = {
     mappings = {
       i = {
@@ -257,6 +277,7 @@ require('telescope').setup{
     },
   }
 }
+require('telescope').load_extension('fzf')
 
 -- LSP Signature setup
 require "lsp_signature".setup()
