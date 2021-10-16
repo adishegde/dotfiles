@@ -15,12 +15,16 @@ onoremap il :normal vil<CR>
 nnoremap <silent> <leader>rr :RangerCurrentDirectory<CR>
 
 " project wide search/action
-nnoremap <Leader>pf <cmd>Telescope find_files<cr>
+nnoremap <leader>pf <cmd>Telescope find_files<cr>
 nnoremap <leader>ps <cmd>Telescope live_grep<cr>
 nnoremap <leader>pt <cmd>Telescope lsp_workspace_symbols<cr>
 
 " buffer wide search/action
-nnoremap <Leader>bb <cmd>Telescope buffers<CR>
-nnoremap <Leader>bt <cmd>Telescope lsp_document_symbols<CR>
-nnoremap <silent> <Leader>bd :bd<CR>
-nnoremap <silent> <Leader>bn :enew<CR>
+nnoremap <leader>bb <cmd>Telescope buffers<CR>
+nnoremap <leader>bt <cmd>Telescope lsp_document_symbols<CR>
+nnoremap <silent> <leader>bd :bd<CR>
+nnoremap <silent> <leader>bn :enew<CR>
+
+" org mode mappings
+nnoremap <silent> <leader>os <cmd>Telescope find_files search_dirs={"~/icloud/neorg"}<CR>
+nnoremap <silent> <leader>od <cmd>Neorg workspace main<CR>
