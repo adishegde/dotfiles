@@ -6,7 +6,6 @@ Plug 'morhetz/gruvbox'
 Plug 'shinchu/lightline-gruvbox.vim'
 
 " Generic fuzzy search
-Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 
@@ -18,9 +17,10 @@ Plug 'hrsh7th/nvim-compe'
 Plug 'neovim/nvim-lspconfig'
 Plug 'GoldsteinE/compe-latex-symbols'
 Plug 'onsails/lspkind-nvim'
+Plug 'ray-x/lsp_signature.nvim'
 
 " Tree-sitter configuration
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter', { 'branch': '0.5-compat', 'do': ':TSUpdate' }
 
 " Easy commenting
 Plug 'tpope/vim-commentary'
@@ -70,6 +70,10 @@ Plug 'godlygeek/tabular'
 " Highlight current search result
 Plug 'adamheins/vim-highlight-match-under-cursor'
 
+" Organization and notes
+" Requires plenary.nvim
+Plug 'nvim-neorg/neorg'
+
 call plug#end()
 " Plugin Installations }}}
 
@@ -86,15 +90,56 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   }
 }
 
-require'lspconfig'.rust_analyzer.setup{capabilities = capabilities}
-require'lspconfig'.pyright.setup{}
-require'lspconfig'.texlab.setup{}
-require'lspconfig'.clangd.setup{
+local nvim_lsp = require('lspconfig')
+
+nvim_lsp.rust_analyzer.setup{capabilities = capabilities}
+nvim_lsp.pyright.setup{}
+nvim_lsp.texlab.setup{}
+nvim_lsp.gopls.setup{}
+nvim_lsp.clangd.setup{
   cmd = {"clangd", "--background-index", "--clang-tidy"},
   on_new_config = function(new_config, new_root_dir)
     new_config.cmd = {"clangd", "--background-index", "--clang-tidy"}
   end,
 }
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<leader>lk', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<leader>ld', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<leader>lr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<leader>lc', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<leader>le', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '[g', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']g', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<leader>lq', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+end
+
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches
+local servers = { "clangd", "pyright", "texlab", "gopls"}
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup {
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    }
+  }
+end
 
 local signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
 for type, icon in pairs(signs) do
@@ -123,6 +168,36 @@ require("nvim-autopairs.completion.compe").setup({
   map_complete = true
 })
 
+-- Neorg setup
+require('neorg').setup {
+  load = {
+    ["core.defaults"] = {},
+    ["core.norg.concealer"] = {},
+    ["core.norg.dirman"] = {
+      config = {
+        workspaces = {
+          main = "~/icloud/neorg"
+        }
+      }
+    },
+  },
+  hook = function()
+    local neorg_leader = "<leader>o" -- You may also want to set this to <Leader>o for "organization"
+    local neorg_callbacks = require('neorg.callbacks')
+
+    neorg_callbacks.on_event("core.keybinds.events.enable_keybinds", function(_, keybinds)
+      keybinds.map_event_to_mode("norg", {
+        n = { -- Bind keys in normal mode
+          { "<leader>otd", "core.norg.qol.todo_items.todo.task_done" },
+          { "<leader>otu", "core.norg.qol.todo_items.todo.task_undone" },
+          { "<leader>otp", "core.norg.qol.todo_items.todo.task_pending" },
+          { "<leader>otc", "core.norg.qol.todo_items.todo.task_cycle" }
+        },
+      }, { silent = true, noremap = true })
+    end)
+  end
+}
+
 -- Compe config
 require'compe'.setup {
   source = {
@@ -133,10 +208,20 @@ require'compe'.setup {
     nvim_lua = true;
     ultisnips = true;
     latex_symbols = true;
+    neorg = true;
   };
 }
 
 -- Tree-sitter config
+local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
+parser_configs.norg = {
+    install_info = {
+        url = "https://github.com/nvim-neorg/tree-sitter-norg",
+        files = { "src/parser.c", "src/scanner.cc" },
+        branch = "main"
+    },
+}
+
 require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,
@@ -172,6 +257,9 @@ require('telescope').setup{
     },
   }
 }
+
+-- LSP Signature setup
+require "lsp_signature".setup()
 EOF
 
 let g:lightline = {}
