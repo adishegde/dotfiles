@@ -51,3 +51,4 @@ compile_commands.json
 *.bbl
 *.run.xml
 .cache
+*.fdb_latexmk
