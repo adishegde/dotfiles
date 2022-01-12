@@ -19,7 +19,7 @@ ZSH_AUTOSUGGEST_USE_ASYNC='true'
 
 # Aliases {{{
 # Easy access to config
-alias zshconfig="$EDITOR ~/.zshrc"
+alias zshconfig="$EDITOR ~/.zshrc_config"
 alias vimconfig="$EDITOR ~/.config/nvim/init.vim"
 
 alias v='nvim'
