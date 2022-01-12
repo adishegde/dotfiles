@@ -13,14 +13,17 @@ Plug 'nvim-telescope/telescope.nvim'
 " Ranger
 Plug 'francoiscabrol/ranger.vim'
 
-" Auto-completion using language servers
+" LSP
 Plug 'neovim/nvim-lspconfig'
+
+" Auto-completion using language servers
+Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
-Plug 'hrsh7th/nvim-cmp'
 Plug 'onsails/lspkind-nvim'
-Plug 'ray-x/lsp_signature.nvim'
+Plug 'hrsh7th/cmp-calc'
+" Plug 'ray-x/lsp_signature.nvim'
 
 " Tree-sitter configuration
 Plug 'nvim-treesitter/nvim-treesitter', { 'branch': '0.5-compat', 'do': ':TSUpdate' }
@@ -77,6 +80,8 @@ Plug 'adamheins/vim-highlight-match-under-cursor'
 " Requires plenary.nvim
 Plug 'nvim-neorg/neorg'
 
+Plug 'phaazon/hop.nvim'
+
 call plug#end()
 " Plugin Installations }}}
 
@@ -104,8 +109,14 @@ cmp.setup({
     { name = 'ultisnips' },
     { name = 'buffer' },
     { name = 'neorg' },
+    { name = 'calc' },
   }
 })
+
+cmp.event:on(
+  'confirm_done',
+  require('nvim-autopairs.completion.cmp').on_confirm_done()
+)
 
 -- LSP config
 local nvim_lsp = require('lspconfig')
@@ -124,6 +135,7 @@ nvim_lsp.clangd.setup{
     new_config.cmd = {"clangd", "--background-index", "--clang-tidy"}
   end,
 }
+nvim_lsp.rust_analyzer.setup{capabilities = capabilities}
 
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -150,7 +162,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "clangd", "pyright", "texlab", "gopls" }
+local servers = { "pyright", "texlab", "gopls", "clangd", "rust_analyzer" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
@@ -169,7 +181,7 @@ end
 require('lspkind').init({})
 
 -- Autopairs config
-local npairs = require'nvim-autopairs'
+local npairs = require('nvim-autopairs')
 
 local Rule = require('nvim-autopairs.rule')
 npairs.setup({ enable_check_bracket_line = false })
@@ -180,13 +192,6 @@ npairs.add_rules({
       return vim.tbl_contains({ '()', '[]', '{}' }, pair)
     end),
   Rule("$", "$",{"tex", "latex"})
-})
-
-require('nvim-autopairs.completion.cmp').setup({
-  map_cr = true,
-  map_complete = true,
-  auto_select = true,
-  insert = false
 })
 
 -- Neorg setup
@@ -280,7 +285,10 @@ require('telescope').setup{
 require('telescope').load_extension('fzf')
 
 -- LSP Signature setup
-require "lsp_signature".setup()
+-- require('lsp_signature').setup()
+
+-- Hop setup
+require('hop').setup()
 EOF
 
 let g:lightline = {}
@@ -293,7 +301,7 @@ let g:lightline.active = {
       \ ]}
 let g:lightline.component_function = {'sleuth_info': 'SleuthIndicator'}
 
-let g:arpeggio_timeoutlen=200
+let g:arpeggio_timeoutlen = 200
 
 let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 
