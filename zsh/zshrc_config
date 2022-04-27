@@ -49,7 +49,7 @@ alias ls='exa'
 # Aliases }}}
 
 # Custom Commands {{{
-export function timer_notif() {
+function timer_notif() {
   (\
     sleep $1 &&\
     terminal-notifier -title 'Timer' \
