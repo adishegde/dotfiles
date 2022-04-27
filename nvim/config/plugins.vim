@@ -76,10 +76,6 @@ Plug 'godlygeek/tabular'
 " Highlight current search result
 Plug 'adamheins/vim-highlight-match-under-cursor'
 
-" Organization and notes
-" Requires plenary.nvim
-Plug 'nvim-neorg/neorg'
-
 Plug 'phaazon/hop.nvim'
 
 call plug#end()
@@ -108,7 +104,6 @@ cmp.setup({
     { name = 'nvim_lsp' },
     { name = 'ultisnips' },
     { name = 'buffer' },
-    { name = 'neorg' },
     { name = 'calc' },
   }
 })
@@ -193,41 +188,6 @@ npairs.add_rules({
     end),
   Rule("$", "$",{"tex", "latex"})
 })
-
--- Neorg setup
-require('neorg').setup {
-  load = {
-    ["core.defaults"] = {},
-    ["core.norg.concealer"] = {},
-    ["core.norg.dirman"] = {
-      config = {
-        workspaces = {
-          main = "~/icloud/neorg"
-        }
-      }
-    },
-    ["core.norg.completion"] = {
-      config = {
-        engine = "nvim-cmp"
-      }
-    }
-  },
-  hook = function()
-    local neorg_leader = "<leader>o" -- You may also want to set this to <Leader>o for "organization"
-    local neorg_callbacks = require('neorg.callbacks')
-
-    neorg_callbacks.on_event("core.keybinds.events.enable_keybinds", function(_, keybinds)
-      keybinds.map_event_to_mode("norg", {
-        n = { -- Bind keys in normal mode
-          { "<leader>td", "core.norg.qol.todo_items.todo.task_done" },
-          { "<leader>tu", "core.norg.qol.todo_items.todo.task_undone" },
-          { "<leader>tp", "core.norg.qol.todo_items.todo.task_pending" },
-          { "<leader>tc", "core.norg.qol.todo_items.todo.task_cycle" }
-        },
-      }, { silent = true, noremap = true })
-    end)
-  end
-}
 
 -- Tree-sitter config
 local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
