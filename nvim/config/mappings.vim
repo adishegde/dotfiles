@@ -29,7 +29,3 @@ nnoremap <silent> <leader>bn :enew<CR>
 nnoremap <silent> <leader>gw <cmd>HopWord<CR>
 nnoremap <silent> <leader>gc <cmd>HopChar1<CR>
 nnoremap <silent> <leader>gb <cmd>HopChar2<CR>
-
-" org mode mappings
-nnoremap <silent> <leader>os <cmd>Telescope find_files search_dirs={"~/icloud/neorg"}<CR>
-nnoremap <silent> <leader>od <cmd>Neorg workspace main<CR>

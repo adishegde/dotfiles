@@ -23,10 +23,9 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'onsails/lspkind-nvim'
 Plug 'hrsh7th/cmp-calc'
-" Plug 'ray-x/lsp_signature.nvim'
 
 " Tree-sitter configuration
-Plug 'nvim-treesitter/nvim-treesitter', { 'branch': '0.5-compat', 'do': ':TSUpdate' }
+Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 
 " Easy commenting
 Plug 'tpope/vim-commentary'
@@ -190,15 +189,6 @@ npairs.add_rules({
 })
 
 -- Tree-sitter config
-local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
-parser_configs.norg = {
-    install_info = {
-        url = "https://github.com/nvim-neorg/tree-sitter-norg",
-        files = { "src/parser.c", "src/scanner.cc" },
-        branch = "main"
-    },
-}
-
 require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,
@@ -243,9 +233,6 @@ require('telescope').setup{
   }
 }
 require('telescope').load_extension('fzf')
-
--- LSP Signature setup
--- require('lsp_signature').setup()
 
 -- Hop setup
 require('hop').setup()
