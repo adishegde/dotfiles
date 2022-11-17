@@ -147,3 +147,6 @@ set shiftwidth=4
 set expandtab
 set softtabstop=0
 set smarttab
+
+" Disable mouse
+set mouse=

@@ -25,7 +25,17 @@ nnoremap <leader>bt <cmd>Telescope lsp_document_symbols<CR>
 nnoremap <silent> <leader>bd :bd<CR>
 nnoremap <silent> <leader>bn :enew<CR>
 
-" hop mappings
-nnoremap <silent> <leader>gw <cmd>HopWord<CR>
-nnoremap <silent> <leader>gc <cmd>HopChar1<CR>
-nnoremap <silent> <leader>gb <cmd>HopChar2<CR>
+" vim-sandwich
+" add
+nmap <leader>sa <Plug>(sandwich-add)
+xmap <leader>sa <Plug>(sandwich-add)
+
+" delete
+nmap <leader>sd <Plug>(sandwich-delete)
+xmap <leader>sd <Plug>(sandwich-delete)
+nmap <leader>sdb <Plug>(sandwich-delete-auto)
+
+" replace
+nmap <leader>sr <Plug>(sandwich-replace)
+xmap <leader>sr <Plug>(sandwich-replace)
+nmap <leader>srb <Plug>(sandwich-replace-auto)

@@ -75,7 +75,8 @@ Plug 'godlygeek/tabular'
 " Highlight current search result
 Plug 'adamheins/vim-highlight-match-under-cursor'
 
-Plug 'phaazon/hop.nvim'
+" Jump to any point in the screen
+Plug 'ggandor/leap.nvim'
 
 call plug#end()
 " Plugin Installations }}}
@@ -115,9 +116,7 @@ cmp.event:on(
 -- LSP config
 local nvim_lsp = require('lspconfig')
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(
-  vim.lsp.protocol.make_client_capabilities()
-)
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 nvim_lsp.pyright.setup{capabilities = capabilities}
 nvim_lsp.texlab.setup{capabilities = capabilities}
@@ -234,8 +233,8 @@ require('telescope').setup{
 }
 require('telescope').load_extension('fzf')
 
--- Hop setup
-require('hop').setup()
+-- Leap setup
+require('leap').add_default_mappings()
 EOF
 
 let g:lightline = {}
@@ -250,6 +249,7 @@ let g:lightline.component_function = {'sleuth_info': 'SleuthIndicator'}
 
 let g:arpeggio_timeoutlen = 200
 
+let g:sandwich_no_default_key_mappings = 1
 let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 
 let g:neoformat_run_all_formatters = 1
