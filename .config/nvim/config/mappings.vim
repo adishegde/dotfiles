@@ -38,13 +38,18 @@ nnoremap <leader>sr <Plug>(sandwich-replace)
 xnoremap <leader>sr <Plug>(sandwich-replace)
 nnoremap <leader>srb <Plug>(sandwich-replace-auto)
 
-" diagnostics
 lua << EOF
+-- diagnostics
 local opts = { noremap=true, silent=true }
 vim.keymap.set('n', '<leader>le', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<leader>lq', vim.diagnostic.setloclist, opts)
+
+local opts = { noremap=true, silent=false }
+vim.api.nvim_set_keymap("n", "<leader>nn", "<Cmd>ZkNew { title = vim.fn.input('Title: ') }<CR>", opts)
+vim.api.nvim_set_keymap("n", "<leader>nf", "<Cmd>ZkNotes { sort = { 'modified' } }<CR>", opts)
+vim.api.nvim_set_keymap("n", "<leader>ns", "<Cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<CR>", opts)
 EOF
 
 " increment/decrement using dial
