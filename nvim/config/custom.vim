@@ -31,23 +31,6 @@ function! CprunWrapper(...)
   copen
 endfunction
 
-let s:soft_wrap_enabled = 0
-function! ToggleSoftWrap()
-  if s:soft_wrap_enabled
-    nunmap <silent> j
-    nunmap <silent> k
-    nunmap <silent> 0
-    nunmap <silent> $
-    let s:soft_wrap_enabled = 0
-  else
-    nnoremap <silent> j gj
-    nnoremap <silent> k gk
-    nnoremap <silent> 0 g0
-    nnoremap <silent> $ g$
-    let s:soft_wrap_enabled = 1
-  endif
-endfunction
-
 " Write server name into a file for use with nvr.
 " Reference: https://jdhao.github.io/2021/02/20/inverse_search_setup_neovim_vimtex/
 function! s:WriteServerName() abort
@@ -60,5 +43,4 @@ endfunction
 command! Vimconfig :e ~/.config/nvim/init.vim
 command! Reloadconfig :source ~/.config/nvim/init.vim
 command! -nargs=* Cprun :call CprunWrapper(<f-args>)
-command! ToggleSoftWrap :call ToggleSoftWrap()
 " END Commands }}}

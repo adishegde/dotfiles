@@ -137,13 +137,13 @@ set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif
 
 " Scrolling
-set scrolloff=8
+set scrolloff=4
 set sidescrolloff=15
 set sidescroll=5
 
 " Editor and Indentation
 " Good defaults, plugins update as required
-set shiftwidth=4
+set shiftwidth=2
 set expandtab
 set softtabstop=0
 set smarttab
