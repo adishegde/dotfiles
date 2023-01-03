@@ -46,6 +46,8 @@ alias dcls='docker container ls -a'
 alias dils='docker images'
 
 alias ls='exa'
+
+alias dotfiles='git --git-dir=$DOTFILE_DIR --work-tree=$HOME'
 # Aliases }}}
 
 # Custom Commands {{{
