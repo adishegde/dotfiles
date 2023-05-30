@@ -3,24 +3,14 @@ snippet normpar "Make paragraphs look normal"
 \setlength\parskip{0.5em}
 endsnippet
 
-snippet perms_n_comb "Permutation and Combination commands"
+snippet macros "Custom macros"
+% Permutation and combination commands.
 \newcommand\mathperm[2][^n]{\prescript{#1\mkern-2.5mu}{}P_{#2}}
 \newcommand\mathcomb[2][^n]{\prescript{#1\mkern-0.5mu}{}C_{#2}}
-endsnippet
 
-snippet argminmax "Add argmax and argmin commands"
+% argmin and argmax.
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
-endsnippet
-
-snippet hyperref "URL formatting options"
-\usepackage{hyperref}
-\hypersetup{%
-    colorlinks=true,
-    linkcolor=cyan,
-    filecolor=magenta,
-    urlcolor=cyan,
-}
 endsnippet
 
 snippet homework_title "Title box for homeowork template"
@@ -55,21 +45,6 @@ snippet mdframed "Mdframed with defaults"
 \end{mdframed}
 endsnippet
 
-snippet mathpackages "Common math packages"
-\usepackage{amsthm}
-\usepackage{amsmath}
-\usepackage{amssymb}
-endsnippet
-
-snippet mk "Inline math" wA
-$${1}$`!p
-if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
-    snip.rv = ' '
-else:
-    snip.rv = ''
-`$2
-endsnippet
-
 snippet newcommand "New command"
 \newcommand{${1:name}}[${2:args}]{${3:expansion}}
 endsnippet
@@ -79,13 +54,37 @@ snippet biblatex "Biblatex setup"
 \addbibresource{${1:citations.bib}}
 endsnippet
 
-snippet basicstarter "Basic starter template"
-\documentclass[11pt]{article}
-\usepackage[a4paper,hmargin=1in,vmargin=1in]{geometry}
+snippet table "Booktabs table"
+\begin{tabular}{${1:table spec}}
+\toprule
+${2:Headings}
+\midrule
+\bottomrule
+\end{tabular}
+endsnippet
 
-\title{$1}
-\author{${2:Aditya Shridhar Hegde}}
+snippet jg "Angle brackets" iA
+\langle ${1} \rangle
+endsnippet
 
-\begin{document}
-\end{document}
+snippet jl "Inline math" wA
+$${1}$
+endsnippet
+
+snippet jd "Display math" wA
+\[
+$1
+.\]
+endsnippet
+
+snippet // "Fraction" iA
+\\frac{$1}{$2}$0
+endsnippet
+
+snippet ^ "Superscript" iA
+^{$1}
+endsnippet
+
+snippet _ "Subscript" iA
+_{$1}
 endsnippet

@@ -78,12 +78,6 @@ Plug 'adamheins/vim-highlight-match-under-cursor'
 " Jump to any point in the screen
 Plug 'ggandor/leap.nvim'
 
-" ZK support
-Plug 'mickael-menu/zk-nvim'
-
-" Better increment/decrement
-Plug 'monaqa/dial.nvim'
-
 call plug#end()
 " Plugin Installations }}}
 
@@ -148,6 +142,22 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+nvim_lsp["rust_analyzer"].setup {
+  on_attach = on_attach,
+  cmd = {"rustup", "run", "stable", "rust-analyzer"},
+  settings = {
+      ["rust-analyzer"] = {
+          checkOnSave = {
+              allFeatures = true,
+              overrideCommand = {
+                  'cargo', 'clippy', '--workspace', '--message-format=json',
+                  '--all-targets', '--all-features'
+              }
+          }
+      }
+  }
+}
+
 nvim_lsp["clangd"].setup {
   cmd = {"clangd", "--background-index", "--clang-tidy"},
   on_new_config = function(new_config, new_root_dir)
@@ -175,7 +185,7 @@ npairs.add_rules({
       local pair = opts.line:sub(opts.col, opts.col + 1)
       return vim.tbl_contains({ '()', '[]', '{}' }, pair)
     end),
-  Rule("$", "$",{"tex", "latex"})
+  Rule("$", "$",{"tex", "latex", "markdown"})
 })
 
 -- Tree-sitter config
@@ -227,11 +237,6 @@ require('telescope').load_extension('fzf')
 
 -- Leap setup
 require('leap').add_default_mappings()
-
--- ZK setup
-require("zk").setup({
-  picker = "telescope"
-})
 EOF
 
 let g:lightline = {}
@@ -253,6 +258,7 @@ let g:neoformat_run_all_formatters = 1
 let g:neoformat_enabled_python = ['black', 'docformatter']
 let g:neoformat_enabled_markdown = ['prettier']
 let g:neoformat_enabled_cpp = ['clangformat']
+let g:neoformat_enabled_rust = ['rustfmt']
 
 let g:sleuth_automatic = 1
 
