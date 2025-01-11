@@ -108,7 +108,7 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    family: "FuraCode Nerd Font Mono"
+    family: "Hack Nerd Font"
     style: Regular
 
   # Bold font face
@@ -117,7 +117,7 @@ font:
     #
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: "FuraCode Nerd Font Mono"
+    family: "Hack Nerd Font"
     style: Bold
 
   # Italic font face
@@ -126,7 +126,7 @@ font:
     #
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: "FuraCode Nerd Font Mono"
+    family: "Hack Nerd Font"
     style: Italic
 
   # Bold italic font face
