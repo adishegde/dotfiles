@@ -7,13 +7,18 @@
   process = git-lfs filter-process
   required = true
 [credential]
-  helper = osxkeychain
+  helper = store
 [core]
   excludesfile = ~/.gitignore_global
-  pager = less -+F
+  pager = delta
   editor = nvim
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  navigate = true
 [merge]
   tool = nvim -d
+  conflictstyle = zdiff3
 [mergetool "vimdiff"]
   cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [difftool]
