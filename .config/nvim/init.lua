@@ -104,6 +104,7 @@ vim.opt.mouse = ''
 vim.opt.spelllang = 'en_us'
 vim.opt.fileencoding = 'utf-8'
 
+vim.opt.wrap = true
 vim.opt.cursorline = false
 vim.opt.colorcolumn = '80'
 vim.opt.list = true
@@ -354,6 +355,20 @@ require('mini.diff').setup({
 })
 
 vim.keymap.set('n', '<leader>hp', MiniDiff.toggle_overlay)
+
+-- ===== Snippets =====
+local gen_loader = require('mini.snippets').gen_loader
+require('mini.snippets').setup({
+  snippets = {
+    gen_loader.from_lang(),
+  },
+  mappings = {
+    expand = '<C-e>',
+    jump_next = '<C-l>',
+    jump_prev = '<C-h>',
+    stop = '<C-c>',
+  },
+})
 
 -- ===== Navigation =====
 require('mini.jump').setup()

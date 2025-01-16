@@ -1,0 +1,6 @@
+[
+  {
+    "prefix": "\\begin",
+    "body": "\\begin{${1:env}}\n $2 \n\\end{${1:env}}"
+  }
+]
