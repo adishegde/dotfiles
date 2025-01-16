@@ -65,6 +65,25 @@ function mergepdfs(){
   /usr/local/bin/gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite \
     -sOutputFile=$1 ${@:2}
 }
+
+function latex_proj() {
+  if [ $# -eq 0 ]; then
+    proj=$( ls "$HOME/Documents/Manuscripts" | fzf )
+  else
+    proj=$1
+  fi
+
+  tmux new-session -d -s $proj
+  tmux rename-window -t 0 'term'
+  tmux send-keys -t 'term' "cd $HOME/Documents/Manuscripts/$proj" C-m
+  tmux send-keys -t 'term' "latexmk -pdf -pvc main.tex" C-m
+  tmux split-window -h
+  tmux send-keys -t 'term' "cd $HOME/Documents/Manuscripts/$proj" C-m "clear" C-m
+  tmux new-window -t $proj:1 -n 'nvim'
+  tmux send-keys -t 'nvim' "cd $HOME/Documents/Manuscripts/$proj" C-m
+  tmux send-keys -t 'nvim' "nvim main.tex" C-m
+  tmux attach -t $proj
+}
 # Custom Commands }}}
 
 # Use OSX true colours
