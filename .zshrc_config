@@ -75,13 +75,13 @@ function latex_proj() {
 
   tmux new-session -d -s $proj
   tmux rename-window -t 0 'term'
-  tmux send-keys -t 'term' "cd $HOME/Documents/Manuscripts/$proj" C-m
-  tmux send-keys -t 'term' "latexmk -pdf -pvc main.tex" C-m
-  tmux split-window -h
   tmux send-keys -t 'term' "cd $HOME/Documents/Manuscripts/$proj" C-m "clear" C-m
+  tmux split-window -h
   tmux new-window -t $proj:1 -n 'nvim'
   tmux send-keys -t 'nvim' "cd $HOME/Documents/Manuscripts/$proj" C-m
   tmux send-keys -t 'nvim' "nvim main.tex" C-m
+  tmux send-keys -t 'term' "cd $HOME/Documents/Manuscripts/$proj" C-m
+  tmux send-keys -t 'term' "latexmk -pdf -pvc main.tex" C-m
   tmux attach -t $proj
 }
 # Custom Commands }}}
