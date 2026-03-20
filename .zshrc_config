@@ -86,10 +86,5 @@ function latex_proj() {
 }
 # Custom Commands }}}
 
-# Use OSX true colours
-unset LSCOLORS
-export CLICOLOR=1
-export CLICOLOR_FORCE=1
-
 # Source shell prompt
 eval "$(starship init zsh)"
