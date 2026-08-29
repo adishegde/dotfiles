@@ -88,6 +88,7 @@ add({
 add({ source = "alexghergh/nvim-tmux-navigation" })
 add({ source = "tpope/vim-sleuth" })
 add({ source = "stevearc/conform.nvim" })
+add({ source = "neovim/nvim-lspconfig" })
 
 -- ===== Options =====
 require("mini.basics").setup({
@@ -279,14 +280,14 @@ local on_attach = function(client, bufnr)
     vim.keymap.set("n", "<leader>lc", vim.lsp.buf.code_action, bufopts)
 end
 
-local servers = { "pyright", "texlab", "gopls", "rust_analyzer" }
+local servers = { "pyright", "texlab", "gopls", "rust_analyzer", "clangd" }
 for _, lsp in ipairs(servers) do
-    vim.lsp.config[lsp] = {
+    vim.lsp.config(lsp, {
         on_attach = on_attach,
-    }
+    })
 end
 
-vim.lsp.config["rust_analyzer"] = {
+vim.lsp.config("rust_analyzer", {
     on_attach = on_attach,
     cmd = { "rustup", "run", "stable", "rust-analyzer" },
     settings = {
@@ -304,15 +305,14 @@ vim.lsp.config["rust_analyzer"] = {
             },
         },
     },
-}
+})
 
-vim.lsp.config["clangd"] = {
+vim.lsp.config("clangd", {
     cmd = { "clangd", "--background-index", "--clang-tidy" },
-    on_new_config = function(new_config, new_root_dir)
-        new_config.cmd = { "clangd", "--background-index", "--clang-tidy" }
-    end,
     on_attach = on_attach,
-}
+})
+
+vim.lsp.enable(servers)
 
 -- Diagnostics
 vim.diagnostic.config({
@@ -348,6 +348,15 @@ require("conform").setup({
         python = { "black", "docformatter" },
         rust = { "rustfmt" },
         tex = { "latexindent" },
+    },
+    formatters = {
+        latexindent = {
+            command = "/opt/homebrew/bin/latexindent",
+            prepend_args = {
+                "-l=" .. vim.fn.stdpath("config") .. "/latexindent.yaml",
+                "-c=" .. vim.fn.stdpath("cache") .. "/latexindent/",
+            },
+        },
     },
 })
 

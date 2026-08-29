@@ -1,0 +1,20 @@
+# Use four-space structural indentation without rewriting prose line breaks.
+defaultIndent: "    "
+
+removeTrailingWhitespace:
+  beforeProcessing: 0
+  afterProcessing: 1
+
+# Indent content following `\item` by one structural level instead of aligning
+# it to the text column after `\item`.
+indentAfterItems:
+  itemize: 1
+  itemize*: 1
+  enumerate: 1
+  enumerate*: 1
+  description: 1
+  description*: 1
+  list: 1
+
+indentRules:
+  item: "    "

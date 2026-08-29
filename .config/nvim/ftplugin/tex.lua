@@ -1,5 +1,9 @@
 vim.opt_local.spell = true
 vim.opt_local.colorcolumn = ''
+vim.opt_local.shiftwidth = 4
+vim.opt_local.tabstop = 4
+vim.opt_local.softtabstop = 4
+vim.opt_local.expandtab = true
 
 -- Forward search to PDF
 local move_to_skim = function()
@@ -29,6 +33,7 @@ vim.b.miniai_config = {
   custom_textobjects = {
     ['$'] = { '%$[^%$]*%$', '^%$()[^%$]*()%$$' },
     ['`'] = { "`[^']*'", "^`()[^']*()'$" },
+    ['~'] = { "`[^']*'", "^`()[^']*()'$" },
   },
 }
 

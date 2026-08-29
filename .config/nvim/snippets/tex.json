@@ -1,0 +1,104 @@
+[
+  {
+    "prefix": "beg",
+    "body": [
+      "\\begin{${1:environment}}",
+      "    ${2:content}",
+      "\\end{$1}",
+      "$0"
+    ]
+  },
+  {
+    "prefix": "eq",
+    "body": [
+      "\\begin{equation}",
+      "    ${1:equation}",
+      "\\end{equation}",
+      "$0"
+    ]
+  },
+  {
+    "prefix": "eq*",
+    "body": [
+      "\\begin{equation*}",
+      "    ${1:equation}",
+      "\\end{equation*}",
+      "$0"
+    ]
+  },
+  {
+    "prefix": "ali",
+    "body": [
+      "\\begin{align}",
+      "    ${1:left} &= ${2:right}",
+      "\\end{align}",
+      "$0"
+    ]
+  },
+  {
+    "prefix": "ali*",
+    "body": [
+      "\\begin{align*}",
+      "    ${1:left} &= ${2:right}",
+      "\\end{align*}",
+      "$0"
+    ]
+  },
+  {
+    "prefix": "gat",
+    "body": [
+      "\\begin{gather}",
+      "    ${1:expression}",
+      "\\end{gather}",
+      "$0"
+    ]
+  },
+  {
+    "prefix": "gat*",
+    "body": [
+      "\\begin{gather*}",
+      "    ${1:expression}",
+      "\\end{gather*}",
+      "$0"
+    ]
+  },
+  {
+    "prefix": "item",
+    "body": [
+      "\\begin{itemize}",
+      "    \\item ${1:item}",
+      "\\end{itemize}",
+      "$0"
+    ]
+  },
+  {
+    "prefix": "enum",
+    "body": [
+      "\\begin{enumerate}",
+      "    \\item ${1:item}",
+      "\\end{enumerate}",
+      "$0"
+    ]
+  },
+  {
+    "prefix": "fig",
+    "body": [
+      "\\begin{figure}[${1:htbp}]",
+      "    \\centering",
+      "    \\includegraphics[width=${2:\\linewidth}]{${3:path}}",
+      "    \\caption{${4:caption}}",
+      "    \\label{fig:${5:label}}",
+      "\\end{figure}",
+      "$0"
+    ]
+  },
+  {
+    "prefix": "array",
+    "body": [
+      "\\begin{array}{${1:c}}",
+      "    ${2:entries}",
+      "\\end{array}",
+      "$0"
+    ]
+  }
+]
