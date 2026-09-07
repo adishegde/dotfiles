@@ -5,6 +5,16 @@ removeTrailingWhitespace:
   beforeProcessing: 0
   afterProcessing: 1
 
+# Apply normal structural indentation to displayed math, but do not align or
+# alter its `&` delimiters.
+lookForAlignDelims:
+  equation: 0
+  equation*: 0
+  align: 0
+  align*: 0
+  gather: 0
+  gather*: 0
+
 # Indent content following `\item` by one structural level instead of aligning
 # it to the text column after `\item`.
 indentAfterItems:
@@ -15,6 +25,7 @@ indentAfterItems:
   description: 1
   description*: 1
   list: 1
+  algenumerate: 1
 
 indentRules:
   item: "    "

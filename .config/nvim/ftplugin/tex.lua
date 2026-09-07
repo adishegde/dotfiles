@@ -5,23 +5,11 @@ vim.opt_local.tabstop = 4
 vim.opt_local.softtabstop = 4
 vim.opt_local.expandtab = true
 
--- Forward search to PDF
-local move_to_skim = function()
-  vim.api.nvim_command("write")
-
-  local line = vim.fn.line('.')
-  local file = vim.fn.expand('%')
-  local command = {
-    '/Applications/Skim.app/Contents/SharedSupport/displayline',
-    line,
-    'main.pdf',
-    file,
-  }
-
-  vim.system(command)
-end
-
-vim.keymap.set('n', '<leader>tf', move_to_skim, { silent = true })
+-- Forward search through TexLab, which resolves the project's main PDF.
+vim.keymap.set('n', '<leader>tf', '<cmd>LspTexlabForward<cr>', {
+  silent = true,
+  desc = 'Forward search in PDF',
+})
 
 -- Wordcount ignoring latex commands and comments
 vim.api.nvim_buf_create_user_command(

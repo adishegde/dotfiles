@@ -4,8 +4,7 @@
     "body": [
       "\\begin{${1:environment}}",
       "    ${2:content}",
-      "\\end{$1}",
-      "$0"
+      "\\end{$1}"
     ]
   },
   {
@@ -13,8 +12,7 @@
     "body": [
       "\\begin{equation}",
       "    ${1:equation}",
-      "\\end{equation}",
-      "$0"
+      "\\end{equation}"
     ]
   },
   {
@@ -22,8 +20,7 @@
     "body": [
       "\\begin{equation*}",
       "    ${1:equation}",
-      "\\end{equation*}",
-      "$0"
+      "\\end{equation*}"
     ]
   },
   {
@@ -31,8 +28,7 @@
     "body": [
       "\\begin{align}",
       "    ${1:left} &= ${2:right}",
-      "\\end{align}",
-      "$0"
+      "\\end{align}"
     ]
   },
   {
@@ -40,8 +36,7 @@
     "body": [
       "\\begin{align*}",
       "    ${1:left} &= ${2:right}",
-      "\\end{align*}",
-      "$0"
+      "\\end{align*}"
     ]
   },
   {
@@ -49,8 +44,7 @@
     "body": [
       "\\begin{gather}",
       "    ${1:expression}",
-      "\\end{gather}",
-      "$0"
+      "\\end{gather}"
     ]
   },
   {
@@ -58,8 +52,7 @@
     "body": [
       "\\begin{gather*}",
       "    ${1:expression}",
-      "\\end{gather*}",
-      "$0"
+      "\\end{gather*}"
     ]
   },
   {
@@ -67,8 +60,7 @@
     "body": [
       "\\begin{itemize}",
       "    \\item ${1:item}",
-      "\\end{itemize}",
-      "$0"
+      "\\end{itemize}"
     ]
   },
   {
@@ -76,8 +68,7 @@
     "body": [
       "\\begin{enumerate}",
       "    \\item ${1:item}",
-      "\\end{enumerate}",
-      "$0"
+      "\\end{enumerate}"
     ]
   },
   {
@@ -88,8 +79,7 @@
       "    \\includegraphics[width=${2:\\linewidth}]{${3:path}}",
       "    \\caption{${4:caption}}",
       "    \\label{fig:${5:label}}",
-      "\\end{figure}",
-      "$0"
+      "\\end{figure}"
     ]
   },
   {
@@ -97,8 +87,7 @@
     "body": [
       "\\begin{array}{${1:c}}",
       "    ${2:entries}",
-      "\\end{array}",
-      "$0"
+      "\\end{array}"
     ]
   }
 ]

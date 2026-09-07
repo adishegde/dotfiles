@@ -75,16 +75,6 @@ require("mini.deps").setup({ path = { package = path_package } })
 local add = MiniDeps.add
 
 add({ source = "kana/vim-arpeggio" })
-add({
-    source = "nvim-treesitter/nvim-treesitter",
-    checkout = "master",
-    monitor = "main",
-    hooks = {
-        post_checkout = function()
-            vim.cmd("TSUpdate")
-        end,
-    },
-})
 add({ source = "alexghergh/nvim-tmux-navigation" })
 add({ source = "tpope/vim-sleuth" })
 add({ source = "stevearc/conform.nvim" })
@@ -281,14 +271,33 @@ local on_attach = function(client, bufnr)
 end
 
 local servers = { "pyright", "texlab", "gopls", "rust_analyzer", "clangd" }
-for _, lsp in ipairs(servers) do
+local function add_on_attach(lsp)
+    local server_on_attach = vim.lsp.config[lsp].on_attach
     vim.lsp.config(lsp, {
-        on_attach = on_attach,
+        on_attach = function(client, bufnr)
+            if server_on_attach then
+                server_on_attach(client, bufnr)
+            end
+            on_attach(client, bufnr)
+        end,
     })
 end
+for _, lsp in ipairs(servers) do
+    add_on_attach(lsp)
+end
+
+vim.lsp.config("texlab", {
+    settings = {
+        texlab = {
+            forwardSearch = {
+                executable = "/Applications/Skim.app/Contents/SharedSupport/displayline",
+                args = { "-r", "%l", "%p", "%f" },
+            },
+        },
+    },
+})
 
 vim.lsp.config("rust_analyzer", {
-    on_attach = on_attach,
     cmd = { "rustup", "run", "stable", "rust-analyzer" },
     settings = {
         ["rust-analyzer"] = {
@@ -309,7 +318,6 @@ vim.lsp.config("rust_analyzer", {
 
 vim.lsp.config("clangd", {
     cmd = { "clangd", "--background-index", "--clang-tidy" },
-    on_attach = on_attach,
 })
 
 vim.lsp.enable(servers)
@@ -324,19 +332,14 @@ vim.keymap.set("n", "<leader>lq", vim.diagnostic.setloclist)
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
 
--- Tree sitter
-require("nvim-treesitter.configs").setup({
-    ensure_installed = { "c", "lua", "vim", "vimdoc", "query" },
-    highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = { "markdown" },
-    },
-    incremental_selection = {
-        enable = false,
-    },
-    indent = {
-        enable = true,
-    },
+-- Neovim ships parsers for these filetypes. Use its native Tree-sitter
+-- highlighting without loading the legacy nvim-treesitter plugin.
+vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("native-treesitter", { clear = true }),
+    pattern = { "c", "lua", "markdown", "query", "vim", "vimdoc" },
+    callback = function(args)
+        pcall(vim.treesitter.start, args.buf)
+    end,
 })
 
 -- Formatter
@@ -422,7 +425,7 @@ require("mini.pick").setup({
         mark_all = "<C-a>",
 
         move_down = "<C-j>",
-        move_start = "<C-K>",
+        move_start = "<C-S-k>",
         move_up = "<C-k>",
 
         paste = "<C-r>",
@@ -433,7 +436,7 @@ require("mini.pick").setup({
         scroll_down = "<C-d>",
         scroll_left = "<C-h>",
         scroll_right = "<C-l>",
-        scroll_up = "<C-u>",
+        scroll_up = "<C-b>",
 
         stop = "<esc>",
 
@@ -489,14 +492,6 @@ end, { range = true })
 --- Refresh buffer when editor gets focus
 vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained" }, {
     command = "checktime",
-})
-
--- Write server name into tmp file for latex backward search
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "tex",
-    callback = function()
-        vim.fn.writefile({ vim.v.servername }, "/tmp/nvim_tex_server.txt")
-    end,
 })
 
 -- Unhilight search automatically
